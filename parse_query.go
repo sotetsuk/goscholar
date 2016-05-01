@@ -9,6 +9,7 @@ import (
 
 type Query struct {
 	N int
+	NCiting int
 	ClusterId string
 	query string
 }
@@ -25,11 +26,15 @@ func (q *Query) parseQuery(args map[string]interface{}) {
 		log.Fatal(err)
 	}
 	q.N = n
+	nCiting, err := strconv.Atoi(casted["-M"])
+	if err != nil {
+		log.Fatal(err)
+	}
+	q.NCiting = nCiting
 }
 
 func (q *Query) setClusterIdQuery() {
 	q.query = SCHOLAR_URL + "scholar?hl=en&cluster=" + q.ClusterId + "&num=" + fmt.Sprintf("%d", q.N)
-	fmt.Println(q.query)
 }
 
 func (q *Query) NewQuery() (*goquery.Document, error) {
