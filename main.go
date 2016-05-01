@@ -124,6 +124,10 @@ func ExampleScrape() {
 }
 
 func main() {
-	// ExampleScrape()
-	fmt.Println(SCHOLAR_URL)
+	q := Query{N:3, clusterId:"12809083704359984246"}
+	q.setClusterIdQuery()
+	doc, _ := q.NewQuery()
+	as := Articles{n:10}
+	as.ParseAllArticles(doc)
+	fmt.Println(as.Json())
 }
