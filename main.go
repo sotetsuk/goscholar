@@ -4,8 +4,7 @@ import (
 	"github.com/docopt/docopt-go"
 	"os"
 	"fmt"
-	// "github.com/PuerkitoBio/goquery"
-	// "log"
+	"log"
 )
 
 func main() {
@@ -28,7 +27,10 @@ Options:
 	q := Query{}
 	q.parseQuery(arguments)
 	q.setClusterIdQuery()
-	doc, _ := q.NewQuery()
+	doc, err := q.NewQuery()
+	if err != nil {
+		log.Fatal(err)
+	}
 	as := Articles{n:q.N}
 	as.ParseAllArticles(doc, q.NCiting, true)
 	fmt.Println(as.Json())

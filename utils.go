@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"regexp"
 )
 
 const (
@@ -12,6 +13,11 @@ const (
 	ARTICLE_FOOTER_SELECTOR  = ".gs_fl"
 	ARTICLE_SIDEBAR_SELECTOR = ".gs_md_wp > a"
 )
+
+func parseYear(s string) string {
+	re, _ := regexp.Compile("\\d{4}")
+	return string(re.Find([]byte(s)))
+}
 
 func parseClusterId(url string) string {
 	url = url[15:]
@@ -25,8 +31,7 @@ func parseNumberOfCitations(s string) string {
 }
 
 func parseNumberOfVersions(s string) string {
-	// TODO: WRITE HERE
-	return s
+	return s[strings.Index(s, " "):strings.LastIndex(s, " ")]
 }
 
 func parseInfoId(url string) string {

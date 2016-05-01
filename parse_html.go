@@ -30,7 +30,7 @@ type Articles struct {
 
 func (a *Article) Parse(s *goquery.Selection, nCiting int, recur bool) {
 	a.parseTitle(s)
-	// a.parseHeader(s)
+	a.parseHeader(s)
 	a.parseFooter(s)
 	a.parseSideBar(s)
 	a.parseBibTeX()
@@ -46,27 +46,35 @@ func (a *Article) parseTitle(s *goquery.Selection) {
 }
 
 func (a *Article) parseHeader(s *goquery.Selection) {
-	a.Year = s.Find(ARTICLE_HEADER_SELECTOR).Text() // TODO: parse
+	a.Year = parseYear(s.Find(ARTICLE_HEADER_SELECTOR).Text())
 }
 
 func (a *Article) parseFooter(s *goquery.Selection) {
 	divFooter := s.Find(ARTICLE_FOOTER_SELECTOR)
 	parseFooter := func(i int, s *goquery.Selection) {
+
 		href, _ := s.Attr("href")
 		text := s.Text()
+		// fmt.Println(href)
+		// fmt.Println(text)
+
 		if strings.HasPrefix(href, "/scholar?cites") {
+			// fmt.Println("cites")
 			a.ClusterId = parseClusterId(href) // TODO: 両方で
 			a.NumberOfCitations = parseNumberOfCitations(text)
 		}
 		if strings.HasPrefix(href, "/scholar?cluster") {
-			a.NumberOfVersions = text
+			// fmt.Println("cluster")
+			a.NumberOfVersions = parseNumberOfVersions(text)
 		}
 		if strings.HasPrefix(href, "/scholar?q=related") {
+			// fmt.Println("realted")
 			a.InfoId = parseInfoId(href)
 		}
 
 	}
 	divFooter.Find("a").Each(parseFooter)
+	// fmt.Println("::", a.NumberOfVersions)
 }
 
 func (a *Article) parseSideBar(s *goquery.Selection) {
