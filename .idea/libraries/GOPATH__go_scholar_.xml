@@ -1,0 +1,42 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;go-scholar&gt;">
+    <CLASSES>
+      <root url="file://$USER_HOME$/gopath/src/golang.org" />
+      <root url="file://$USER_HOME$/gopath/src/github.com" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="file://$USER_HOME$/gopath/src/github.com/jteeuwen/go-bindata/testdata" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/BurntSushi/toml/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/armon/go-radix/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/andybalholm/cascadia/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/jteeuwen/go-bindata/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/mattn/go-isatty/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/google/go-github/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/google/go-querystring/.git" />
+      <root url="file://$PROJECT_DIR$" />
+      <root url="file://$USER_HOME$/gopath/src/golang.org/x/net/html/testdata" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/tcnksm/go-latest/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/mattn/go-runewidth/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/mattn/go-isatty/_example" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/hashicorp/go-version/.git" />
+      <root url="file://$USER_HOME$/gopath/src/golang.org/x/net/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/olekukonko/tablewriter/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/docopt/docopt-go/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/PuerkitoBio/goquery/testdata" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/tcnksm/gcli/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/gorilla/websocket/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/tcnksm/go-gitconfig/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/mitchellh/cli/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/sotetsuk/arxiv-api/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/bgentry/speakeasy/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/mitchellh/go-homedir/.git" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/PuerkitoBio/goquery/.git" />
+      <root url="file://$USER_HOME$/gopath/src/golang.org/x/net/http2/testdata" />
+      <root url="file://$USER_HOME$/gopath/src/golang.org/x/tour/.git" />
+      <root url="file://$USER_HOME$/gopath/src/golang.org/x/net/html/charset/testdata" />
+      <root url="file://$USER_HOME$/gopath/src/github.com/BurntSushi/toml/_examples" />
+    </excluded>
+  </library>
+</component>
