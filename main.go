@@ -25,8 +25,8 @@ Query-options:
   --query=<query>
 
 Search-options:
-  --before=<year>
   --after=<year>
+  --before=<year>
   --num=<num>
   --start=<start>
 
