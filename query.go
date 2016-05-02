@@ -17,6 +17,7 @@ var (
 )
 
 func SearchQuery(query, author, title, after, before, start, num string) (string, error) {
+	// TODO: validate inputs
 	q := query
 	if author != "" {
 		if !StartAndEndWithDoubleQuotation(author){
