@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/docopt/docopt-go"
 	"os"
-	"fmt"
 	"log"
 )
 
@@ -27,7 +26,7 @@ Query-options:
 Search-options:
   --after=<year>
   --before=<year>
-  --num=<num>
+  --num-search=<num-search>
   --start=<start>
 
 Output-options:
@@ -42,8 +41,6 @@ Others:
 	Args := make(map[string]string)
 
 	if arguments["search"].(bool) {
-		fmt.Println("serach")
-
 		query_options := []string{"--author", "--title", "--query"}
 		for _, op := range query_options {
 			if arguments[op] != nil {
@@ -62,12 +59,10 @@ Others:
 			log.Fatal("Wrong arguments: at least one of --author, --title or --query is needed.")
 		}
 	} else if arguments["find"].(bool) {
-		fmt.Println("find")
+
 	} else if arguments["cite"].(bool) {
-		fmt.Println("cite")
+
 	} else {
 		log.Fatal("Wrong arguments.")
 	}
-
-	fmt.Println(Args)
 }

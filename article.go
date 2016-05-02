@@ -61,11 +61,11 @@ func (a *Article) parseFooter(s *goquery.Selection) {
 		text := s.Text()
 
 		if strings.HasPrefix(href, "/scholar?cites") {
-			a.ClusterId = parseClusterId(href) // TODO: 両方で
+			a.ClusterId = parseClusterId(href) // TODO: both
 			a.NumberOfCitations = parseNumberOfCitations(text)
 		}
 		if strings.HasPrefix(href, "/scholar?cluster") {
-			a.NumberOfVersions = parseNumberOfVersions(text)
+			a.NumberOfVersions = parseNumberOfVersions(text) // TODO: fix
 		}
 		if strings.HasPrefix(href, "/scholar?q=related") {
 			a.InfoId = parseInfoId(href)
