@@ -1,4 +1,4 @@
-package go_scholar
+package main
 
 import (
 	"testing"
