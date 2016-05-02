@@ -2,7 +2,6 @@ package go_scholar
 
 import (
 	"fmt"
-	"errors"
 )
 
 const (
@@ -16,68 +15,33 @@ var (
 	CITE_POPUP_URL = SCHOLAR_URL + "scholar?q=info:%s:scholar.google.com/&output=cite&scirp=0&hl=en"
 )
 
-type ScholarQuery struct {
-	method     string
-	parameters map[string]string
-}
-
-type CitePopUpQuery struct {
-	info string
-}
-
-func (q *ScholarQuery) NewQuery() (string, error) {
-	if q.method == "search" {
-
-	} else if q.method == "find" {
-		return q.findQuery()
-	} else if q.method == "cite" {
-		return q.citeQuery()
+func SearchQuery(query, author, title, after, before, start, num string) (string, error) {
+	q := query
+	if author != "" {
+		if !StartAndEndWithDoubleQuotation(author){
+			q += "author:\"" + author + "\""
+		}
 	}
-
-	return "", errors.New("Wrong method was called. Only search, find and cite are usable.")
-}
-
-func (q *ScholarQuery) searchQuery() (string, error) {
-	return "", nil
-}
-
-func (q *ScholarQuery) findQuery() (string, error) {
-	// parse parameters
-	cluster_id, exists := q.parameters["cluster_id"]
-	if !exists {
-		return "", errors.New("Parameter cluster_id is needed!")
-	}
-
-	// fill nil of option by blank string
-	num, exists := q.parameters["num"]
-	if !exists {
-		num = ""
-	}
-
-	return fmt.Sprintf(FIND_URL, cluster_id, num), nil
-}
-
-func (q *ScholarQuery) citeQuery() (string, error) {
-	// parse parameters
-	cluster_id, ok := q.parameters["cluster_id"]
-	if !ok {
-		return "", errors.New("Parameter cluster_id is needed!")
-	}
-
-	// fill nil options by blank string
-	params := []string{"before", "after", "num", "start"}
-	for _, op := range params {
-		if _, exists := q.parameters[op]; !exists {
-			q.parameters[op] = ""
+	if title != "" {
+		if !StartAndEndWithDoubleQuotation(title) {
+			q += "\"" + title + "\""
 		}
 	}
 
-	return fmt.Sprintf(CITE_URL, cluster_id, q.parameters["after"], q.parameters["before"], q.parameters["start"], q.parameters["num"]), nil
+	return fmt.Sprintf(SEARCH_URL, q, after, before, start, num), nil
 }
 
-func (q *CitePopUpQuery) NewQuery() (string, error) {
-	if q.info == "" {
-		return "", errors.New("info attribute is nil!")
-	}
-	return fmt.Sprintf(CITE_POPUP_URL, q.info), nil
+func FindQuery(cluster_id, num string) (string, error) {
+	// TODO: validate inputs
+	return fmt.Sprintf(FIND_URL, cluster_id, num), nil
+}
+
+func CiteQuery(cluster_id, before, after, start, num string) (string, error) {
+	// TODO: validate inputs
+	return fmt.Sprintf(CITE_URL, cluster_id, after, before, start, num), nil
+}
+
+func CitePopUpQuery(info string) (string, error) {
+	// TODO: validate inputs
+	return fmt.Sprintf(CITE_POPUP_URL, info), nil
 }
