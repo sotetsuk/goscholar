@@ -40,3 +40,10 @@ func parseInfoId(url string) string {
 	return url
 }
 
+func StartAndEndWithDoubleQuotation(s string) bool {
+	if strings.HasPrefix(s, "\"") && strings.HasSuffix(s, "\"") {
+		return true
+	} else {
+		return false
+	}
+}

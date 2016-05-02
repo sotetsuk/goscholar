@@ -6,12 +6,8 @@ import (
 )
 
 func TestFindQuery(t *testing.T) {
-	// set params
-	params := map[string]string{"cluster_id":"8108748482885444188", "num":""}
-	q := ScholarQuery{"find", params}
-
 	// exec findQuery()
-	query, err := q.findQuery()
+	query, err := FindQuery("8108748482885444188", "")
 	if err != nil {
 		t.Error(fmt.Sprintf("findQuery() failed to return values: %v", err.Error()))
 	}
@@ -25,12 +21,8 @@ func TestFindQuery(t *testing.T) {
 }
 
 func TestCiteQuery(t *testing.T) {
-	// set params
-	params := map[string]string{"cluster_id":"8108748482885444188", "after":"2012", "start":"20", "num":"40"}
-	q := ScholarQuery{"cite", params}
-
 	// exec citeQuery()
-	cite_query, err := q.citeQuery()
+	cite_query, err := CiteQuery("8108748482885444188", "", "2012", "20", "40")
 	if err != nil {
 		t.Error(fmt.Sprintf("citeQuery() failed to return values: %v", err.Error()))
 	}
