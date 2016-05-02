@@ -1,4 +1,4 @@
-package main
+package go_scholar
 
 import (
 	"github.com/docopt/docopt-go"
@@ -12,38 +12,47 @@ func main() {
 	usage := `go-scholar: scraping google scholar searching results
 
 Usage:
-  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>] [options]
-  go-scholar find <cluster-id> [options]
-  go-scholar cite <cluster-id> [options]
+  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>] [search-options] [output-options]
+  go-scholar cite <cluster-id> [search-options] [output-options]
+  go-scholar find <cluster-id> [--num=<num>] [output-options]
   go-scholar -h | --help
   go-scholar --version
-Options:
+
+Query-options:
+  <cluster-id>
   --author=<author>
   --title=<title>
   --query=<query>
+
+Search-options:
   --before=<year>
   --after=<year>
-  --num-articles=<num-articles>
+  --num=<num>
   --start=<start>
+
+Output-options:
   --json
   --bibtex
+
+Others:
   -h --help
   --version`
 
 	arguments, _ := docopt.Parse(usage, os.Args[1:], true, version, false)
 	Args := make(map[string]string)
-	options := []string{"--author", "--title", "--query"}
-
-	for _, op := range options {
-		if arguments[op] != nil {
-			Args[op] = arguments[op].(string)
-		}
-	}
 
 	if arguments["search"].(bool) {
 		fmt.Println("serach")
+
+		query_options := []string{"--author", "--title", "--query"}
+		for _, op := range query_options {
+			if arguments[op] != nil {
+				Args[op] = arguments[op].(string)
+			}
+		}
+
 		ok := false
-		for _, op := range options {
+		for _, op := range query_options {
 			if arguments[op] != nil {
 				ok = true
 				break
