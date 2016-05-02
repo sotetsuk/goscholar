@@ -8,29 +8,29 @@ import (
 
 func parseYear(s string) string {
 	re, _ := regexp.Compile("\\d{4}")
-	return string(re.Find([]byte(s)))
+	return strings.TrimSpace(string(re.Find([]byte(s))))
 }
 
 func parseClusterId(url string) string {
 	url = url[15:]
 	ix := strings.Index(url, "&")
 	url = url[:ix]
-	return url
+	return strings.TrimSpace(url)
 }
 
 func parseNumberOfCitations(s string) string {
-	return s[8:]
+	return strings.TrimSpace(s[8:])
 }
 
 func parseNumberOfVersions(s string) string {
-	return s[strings.Index(s, " "):strings.LastIndex(s, " ")]
+	return strings.TrimSpace(s[strings.Index(s, " "):strings.LastIndex(s, " ")])
 }
 
 func parseInfoId(url string) string {
 	url = url[19:]
 	ix := strings.Index(url, ":")
 	url = url[:ix]
-	return url
+	return strings.TrimSpace(url)
 }
 
 func StartAndEndWithDoubleQuotation(s string) bool {
