@@ -11,18 +11,23 @@ const (
 )
 
 type Articles struct {
-	articles []Article
+	articles []*Article
 }
 
 func NewArticles(n int) *Articles {
 	as := Articles{}
-	as.articles = make([]Article, n)
+	as.articles = make([]*Article, n)
 	return &as
 }
 
 func (as *Articles) ParseAllArticles(doc *goquery.Document, useBibTeX bool) {
 	parse := func(i int, s *goquery.Selection) {
-		as.articles[i].Parse(s, useBibTeX)
+		a := NewArticle()
+		a.Parse(s, useBibTeX)
+		if i >= len(as.articles) {  // TODO: fix
+			return
+		}
+		as.articles[i] = a
 	}
 	doc.Find(WHOLE_ARTICLE_SELECTOR).Each(parse)
 }
