@@ -55,26 +55,20 @@ func (a *Article) parseFooter(s *goquery.Selection) {
 
 		href, _ := s.Attr("href")
 		text := s.Text()
-		// fmt.Println(href)
-		// fmt.Println(text)
 
 		if strings.HasPrefix(href, "/scholar?cites") {
-			// fmt.Println("cites")
 			a.ClusterId = parseClusterId(href) // TODO: 両方で
 			a.NumberOfCitations = parseNumberOfCitations(text)
 		}
 		if strings.HasPrefix(href, "/scholar?cluster") {
-			// fmt.Println("cluster")
 			a.NumberOfVersions = parseNumberOfVersions(text)
 		}
 		if strings.HasPrefix(href, "/scholar?q=related") {
-			// fmt.Println("realted")
 			a.InfoId = parseInfoId(href)
 		}
 
 	}
 	divFooter.Find("a").Each(parseFooter)
-	// fmt.Println("::", a.NumberOfVersions)
 }
 
 func (a *Article) parseSideBar(s *goquery.Selection) {
