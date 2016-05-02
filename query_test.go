@@ -5,6 +5,21 @@ import (
 	"fmt"
 )
 
+func TestSearchQuery(t *testing.T) {
+	// exec SearchQuery()
+	query, err := SearchQuery("deep learning", "Bengio", "", "2015", "", "20", "100")
+	if err != nil {
+		t.Error(fmt.Sprintf("SearchQuery failed to return values: %v", err.Error()))
+	}
+
+	// check the results and expected results
+	expected := "https://scholar.google.co.jp/scholar?hl=en&q=deep+learning+author:\"Bengio\"&as_ylo=2015&as_yhi=&start=20&num=100"
+	if query != expected {
+		t.Error(fmt.Sprintf("SearchQuery returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
+	}
+	fmt.Printf("SearchQuery() returns %v\n", query)
+}
+
 func TestFindQuery(t *testing.T) {
 	// exec findQuery()
 	query, err := FindQuery("8108748482885444188", "")

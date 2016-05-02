@@ -2,6 +2,7 @@ package go_scholar
 
 import (
 	"fmt"
+	"strings"
 )
 
 const (
@@ -19,14 +20,15 @@ func SearchQuery(query, author, title, after, before, start, num string) (string
 	q := query
 	if author != "" {
 		if !StartAndEndWithDoubleQuotation(author){
-			q += "author:\"" + author + "\""
+			q += "+author:\"" + author + "\""
 		}
 	}
 	if title != "" {
 		if !StartAndEndWithDoubleQuotation(title) {
-			q += "\"" + title + "\""
+			q += "+\"" + title + "\""
 		}
 	}
+	q = strings.Replace(q, " ", "+", -1)
 
 	return fmt.Sprintf(SEARCH_URL, q, after, before, start, num), nil
 }
