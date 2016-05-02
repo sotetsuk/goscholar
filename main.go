@@ -8,19 +8,25 @@ import (
 )
 
 func main() {
-	version := "arxiv-api 0.0.1"
-	usage := `go-scholar
+	version := "go-scholar 0.0.1"
+	usage := `go-scholar: scraping google scholar searching results
+
 Usage:
-  go-scholar [-C=<cluster-id>] [-N=<num-articles>] [-M=<num-citing>]
+  go-scholar search (--author=<author>|--title=<title>|--query=<query>) [--before=<year>|--after=<year>|--num-articles=<num-articles>|--start=<start>]
+  go-scholar find <cluster-id> [--before=<year>|--after=<year>|--num-articles=<num-articles>|--start=<start>]
+  go-scholar cite <cites-id> [--before=<year>|--after=<year>|--num-articles=<num-articles>|--start=<start>]
   go-scholar -h | --help
   go-scholar --version
 Options:
-  -C=<cluster-id>        ClusterId
-  -N=<num-articles>      Number of articles which we will fetch [default: 1]
-  -M=<num-citing>        Number of articles which cites each article [default: 3]
-  -h --help              Show this screen.
-  --version              Show version.`
-
+  --author=<author>
+  --title=<title>
+  --query=<query>
+  --before=<year>
+  --after=<year>
+  --num-articles=<num-articles>
+  --start=<start>
+  -h --help
+  --version`
 
 	arguments, _ := docopt.Parse(usage, os.Args[1:], true, version, false)
 
