@@ -1,5 +1,8 @@
-# go-scholar
 [![Build Status](https://travis-ci.org/sotetsuk/go-scholar.svg?branch=master)](https://travis-ci.org/sotetsuk/go-scholar)
+
+# go-scholar
+**Go** ogle **scholar** crawler and scraper written in **Go**
+
 
 ## Install
 
