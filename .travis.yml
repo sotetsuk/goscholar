@@ -3,9 +3,18 @@ language: go
 go:
   - 1.5
 
+before_install:
+  - go get github.com/axw/gocov/gocov
+  - go get github.com/mattn/goveralls
+  - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
+
 install:
   - go get github.com/PuerkitoBio/goquery
   - go get github.com/docopt/docopt-go
 
 script:
-  - go test -v ./
+  - $HOME/gopath/bin/goveralls -repotoken $COVERALLS_TOKEN
+
+env:
+  global:
+    secure: "RCNzxxPKVQJ38Jve0dvu+VP8Guwuvm6wmgNrOIIFkDWUnKf8ZpCNpv4cqeFA3PLOWWuoa3EHxLIcnae9HkRIx1Be3uUQ+e8pq3TU0bS3yL5GtMG20DUVwS7Ely6m0fIxsi/wBM845zP94wgpgSmFV2osXwbtvbW5gJGJ3Aq7C6rQlu5gaP33OMvzV1/aSIDHWgxD2UMgV40ScuySl17fS8ab0Mnd+Jvf7NRSNFxB0Q3aysl+M5KYpAgKsvu+TYs5loqeF1OeVLtmJAe85sxpoCuCC87/lrrOzE8LVb9LLcYka6Rtrs67RXXwn9YFtSQHct2zm9FHQqUm9udUn8eaoJaSrq/L6ZDkIRS4STCU1MzYpulB+c5ujb3InqdmhdFKY6RxqgEROq5IOyXtUflD3eQno93jsEasq4V8clfvOyAlaRVhBhBECupP6q9rLTV28/qgBC3QF0P07Ia1sIIauXwiRtkFHSCqgPy6jdyxTDrl5xqpSnk7iR0A1Y9UdJXvRMOWIBUl0/YIzcKy9UT7Dz4NRKB+22gemimYmVZ6Wfh73rsiptYY1Jjzl41tXLC3KQ2kPqWRuH7x1q4sbdKaazBS/1RLHobmcHnH23oSO36+ClgM+pxsvIJUcKWMkKPiFIEE9Zqhwf71ksqJz87boa3B1wMI1WjqlqpR/tY9xnw="
