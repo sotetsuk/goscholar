@@ -86,5 +86,8 @@ func TestParseFooter(t *testing.T) {
 	if a.InfoId != expectedInfoId {
 		t.Error(fmt.Sprintf("Expected: %v\nActual: %v", expectedInfoId, a.InfoId))
 	}
-	fmt.Println("Title: ", a.Title)
+	fmt.Println("ClusterId: ", a.ClusterId)
+	fmt.Println("NumberOfCitations: : ", a.NumberOfCitations)
+	fmt.Println("NumberOfValidations: ", a.NumberOfVersions)
+	fmt.Println("InfoId: ", a.InfoId)
 }
