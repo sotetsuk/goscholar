@@ -11,12 +11,14 @@ import (
 
 func main() {
 	version := "go-scholar 0.0.1"
-	usage := `go-scholar: scraping google scholar searching results
+	usage := `go-scholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>] [search-options] [output-options]
-  go-scholar find <cluster-id> [--num=<num>] [output-options]
-  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [output-options]
+  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>]
+                    [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                    [--json|--bibtex]
+  go-scholar find <cluster-id> [--num=<num>] [--json|--bibtex]
+  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
   go-scholar -h | --help
   go-scholar --version
 
