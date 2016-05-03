@@ -24,7 +24,7 @@ func (as *Articles) ParseAllArticles(doc *goquery.Document, useBibTeX bool) {
 	parse := func(i int, s *goquery.Selection) {
 		a := NewArticle()
 		a.Parse(s, useBibTeX)
-		if i >= len(as.articles) {  // TODO: fix
+		if i >= len(as.articles) { // TODO: fix how to treat slice length
 			return
 		}
 		as.articles[i] = a
