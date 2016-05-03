@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/docopt/docopt-go"
-	"os"
 	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -59,7 +62,32 @@ Others:
 			log.Fatal("Wrong arguments: at least one of --author, --title or --query is needed.")
 		}
 	} else if arguments["find"].(bool) {
+		// set parameters
+		cluster_id := arguments["<cluster-id>"].(string)
 
+		num := ""
+		if arguments["--num"] != nil {
+			num = arguments["--num"].(string)
+		}
+
+		n := 1
+		if v, err := strconv.Atoi(num); num != "" && err != nil { // TODO: fix error handling
+			n = v
+		}
+
+		// get doc
+		query, err := FindQuery(cluster_id, num)
+		if err != nil {
+			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
+		}
+
+		// parse
+		doc, err := goquery.NewDocument(query)
+		as := NewArticles(n) // TODO: this n is not appropriate. another parameter is required.
+		as.ParseAllArticles(doc, false)
+
+		// output
+		fmt.Println(as.Json()) // TODO: check --json, --bibtex
 	} else if arguments["cite"].(bool) {
 
 	} else {
