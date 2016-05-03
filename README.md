@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 
 # go-scholar
-**Go**ogle **scholar** crawler and scraper written in **Go**
+**Go**ogle **Scholar** crawler and scraper written in **Go**
 
 
 ## Install
@@ -19,12 +19,14 @@ $ go-scholar -h
 
 ```
 $ go-scholar -h
-go-scholar: scraping google scholar searching results
+go-scholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>] [search-options] [output-options]
-  go-scholar cite <cluster-id> [search-options] [output-options]
-  go-scholar find <cluster-id> [--num=<num>] [output-options]
+  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>]
+                    [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                    [--json|--bibtex]
+  go-scholar find <cluster-id> [--num=<num>] [--json|--bibtex]
+  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
   go-scholar -h | --help
   go-scholar --version
 
