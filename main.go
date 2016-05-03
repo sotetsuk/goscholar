@@ -15,8 +15,8 @@ func main() {
 
 Usage:
   go-scholar search [--author=<author>] [--title=<title>] [--query=<query>] [search-options] [output-options]
-  go-scholar cite <cluster-id> [search-options] [output-options]
   go-scholar find <cluster-id> [--num=<num>] [output-options]
+  go-scholar cite <cluster-id> [search-options] [output-options]
   go-scholar -h | --help
   go-scholar --version
 
@@ -29,7 +29,7 @@ Query-options:
 Search-options:
   --after=<year>
   --before=<year>
-  --num-search=<num-search>
+  --num=<num>
   --start=<start>
 
 Output-options:
@@ -61,7 +61,7 @@ Others:
 		if !ok {
 			log.Fatal("Wrong arguments: at least one of --author, --title or --query is needed.")
 		}
-	} else if arguments["find"].(bool) {
+	} else if arguments["find"].(bool) { // TODO: remove --num parameter
 		// set parameters
 		cluster_id := arguments["<cluster-id>"].(string)
 
