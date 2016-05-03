@@ -43,6 +43,37 @@ Others:
 	arguments, _ := docopt.Parse(usage, os.Args[1:], true, version, false)
 	Args := make(map[string]string)
 
+	// set parameters
+	var cluster_id, after, before, num, start string // TODO: change type to int
+	if arguments["<cluster-id>"] != nil {
+		cluster_id = arguments["<cluster-id>"].(string)
+	}
+	if arguments["--after"] != nil {
+		after = arguments["--after"].(string)
+	}
+	if arguments["--before"] != nil {
+		before = arguments["--before"].(string)
+	}
+	if arguments["--num"] != nil {
+		num = arguments["--num"].(string)
+	}
+	if arguments["--start"] != nil {
+		start = arguments["--start"].(string)
+	}
+
+	if num == "" {
+		num = "10"
+	}
+
+	n := 10
+	if m, err := strconv.Atoi(num); err != nil {
+		log.Fatal(fmt.Sprintf("failed to parse --num. --num parameter should be int: %v", err.Error()))
+	} else {
+		n = m
+	}
+
+	var doc *goquery.Document
+
 	if arguments["search"].(bool) {
 		query_options := []string{"--author", "--title", "--query"}
 		for _, op := range query_options {
@@ -62,17 +93,8 @@ Others:
 			log.Fatal("Wrong arguments: at least one of --author, --title or --query is needed.")
 		}
 	} else if arguments["find"].(bool) { // TODO: remove --num parameter (write --num=1 directly in this block)
-		// set parameters
-		cluster_id := arguments["<cluster-id>"].(string)
-
-		num := ""
-		if arguments["--num"] != nil {
-			num = arguments["--num"].(string)
-		}
-
-		n := 1
-		if v, err := strconv.Atoi(num); num != "" && err != nil { // TODO: fix error handling
-			n = v
+		if arguments["--num"] == nil && n == 10 {
+			n = 1
 		}
 
 		// get doc
@@ -80,58 +102,30 @@ Others:
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
 		}
-		doc, err := goquery.NewDocument(query)
+		d, err := goquery.NewDocument(query)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
-
-		// parse
-		as := NewArticles(n) // TODO: this n is not appropriate. another parameter is required.
-		as.ParseAllArticles(doc, false)
-
-		// output
-		fmt.Println(as.Json()) // TODO: check --json, --bibtex
+		doc = d
 	} else if arguments["cite"].(bool) {
-		// set parameters
-		var cluster_id, after, before, num, start string // TODO: change type to int
-		num = "10" // default
-		if arguments["<cluster-id>"] != nil {
-			cluster_id = arguments["<cluster-id>"].(string)
-		}
-		if arguments["--after"] != nil {
-			after = arguments["--after"].(string)
-		}
-		if arguments["--before"] != nil {
-			before = arguments["--before"].(string)
-		}
-		if arguments["--num"] != nil {
-			num = arguments["--num"].(string)
-		}
-		if arguments["--start"] != nil {
-			start = arguments["--start"].(string)
-		}
-
 		// get doc
 		query, err := CiteQuery(cluster_id, after, before, num, start)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
 		}
-		doc, err := goquery.NewDocument(query)
+		d, err := goquery.NewDocument(query)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
-
-		// parse
-		n, err := strconv.Atoi(num)
-		if err != nil {
-			log.Fatal(fmt.Sprintf("failed to parse --num. --num parameter should be int: %v", err.Error()))
-		}
-		as := NewArticles(n) // TODO: this n is not appropriate. another parameter is required.
-		as.ParseAllArticles(doc, false)
-
-		// output
-		fmt.Println(as.Json()) // TODO: check --json, --bibtex
+		doc = d
 	} else {
 		log.Fatal("Wrong arguments. [search|find|cite] is valid.")
 	}
+
+	// parse
+	as := NewArticles(n) // TODO: this n is not appropriate. another parameter is required.
+	as.ParseAllArticles(doc, false)
+
+	// results > STDOUT
+	fmt.Println(as.Json()) // TODO: check --json, --bibtex
 }
