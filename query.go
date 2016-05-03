@@ -39,7 +39,7 @@ func FindQuery(cluster_id, num string) (string, error) {
 	return fmt.Sprintf(FIND_URL, cluster_id, num), nil
 }
 
-func CiteQuery(cluster_id, before, after, start, num string) (string, error) {
+func CiteQuery(cluster_id, after, before, num, start string) (string, error) {
 	// TODO: validate inputs
 	return fmt.Sprintf(CITE_URL, cluster_id, after, before, start, num), nil
 }
