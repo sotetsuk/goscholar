@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/sotetsuk/go-scholar.svg?branch=master)](https://travis-ci.org/sotetsuk/go-scholar)
+[![Coverage Status](https://coveralls.io/repos/github/sotetsuk/go-scholar/badge.svg?branch=master)](https://coveralls.io/github/sotetsuk/go-scholar?branch=master)
 
 # go-scholar
-**Go** ogle **scholar** crawler and scraper written in **Go**
+**Go**ogle **scholar** crawler and scraper written in **Go**
 
 
 ## Install
