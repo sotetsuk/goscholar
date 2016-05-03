@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"log"
 	"strings"
 )
 
@@ -17,7 +16,7 @@ const (
 type Article struct {
 	Title             string
 	Year              string
-	Authors           []string
+	// Authors           []string
 	URL               string
 	ClusterId         string
 	NumberOfCitations string
@@ -25,7 +24,7 @@ type Article struct {
 	InfoId            string
 	PDFLink           string
 	PDFSource         string
-	Bibtex            string
+	// Bibtex            string
 }
 
 func NewArticle() *Article {
@@ -38,9 +37,11 @@ func (a *Article) Parse(s *goquery.Selection, useBibTeX bool) {
 	a.parseHeader(s)
 	a.parseFooter(s)
 	a.parseSideBar(s)
+	/*
 	if useBibTeX {
 		a.crawlAndParseBibTeX()
 	}
+	*/
 }
 
 func (a *Article) parseTitle(s *goquery.Selection) {
@@ -81,6 +82,7 @@ func (a *Article) parseSideBar(s *goquery.Selection) {
 	a.PDFSource = sideBarA.Text()
 }
 
+/*
 func (a *Article) crawlAndParseBibTeX() {
 	popURL, err := CitePopUpQuery(a.InfoId)
 	if err != nil {
@@ -99,10 +101,12 @@ func (a *Article) crawlAndParseBibTeX() {
 	}
 	a.Bibtex = bibDoc.Text()
 }
+*/
 
 func (a *Article) dump() {
 	fmt.Println("title :", a.Title)
 	fmt.Println("year :", a.Year)
+	// fmt.Println("autho :", a.Author)
 	fmt.Println("url: ", a.URL)
 	fmt.Println("cluster_id: ", a.ClusterId)
 	fmt.Println("# of citations: ", a.NumberOfVersions)
@@ -110,5 +114,5 @@ func (a *Article) dump() {
 	fmt.Println("infor id: ", a.InfoId)
 	fmt.Println("pdfLink: ", a.PDFLink)
 	fmt.Println("pdfSource: ", a.PDFSource)
-	fmt.Println("BibTeX: ", a.Bibtex)
+	// fmt.Println("BibTeX: ", a.Bibtex)
 }
