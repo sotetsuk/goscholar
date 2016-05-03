@@ -82,7 +82,7 @@ Others:
 		}
 		doc, err := goquery.NewDocument(query)
 		if err != nil {
-			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: ", err.Error()))
+			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
 
 		// parse
