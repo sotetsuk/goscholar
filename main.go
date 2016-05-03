@@ -41,10 +41,19 @@ Others:
   --version`
 
 	arguments, _ := docopt.Parse(usage, os.Args[1:], true, version, false)
-	Args := make(map[string]string)
 
 	// set parameters
-	var cluster_id, after, before, num, start string // TODO: change type to int
+	var author, title, query, cluster_id, after, before, num, start string // TODO: change type of a few options to int
+
+	if arguments["--author"] != nil {
+		author = arguments["--author"].(string)
+	}
+	if arguments["--title"] != nil {
+		title = arguments["--title"].(string)
+	}
+	if arguments["query"] != nil {
+		query = arguments["query"].(string)
+	}
 	if arguments["<cluster-id>"] != nil {
 		cluster_id = arguments["<cluster-id>"].(string)
 	}
@@ -75,45 +84,39 @@ Others:
 	var doc *goquery.Document
 
 	if arguments["search"].(bool) {
-		query_options := []string{"--author", "--title", "--query"}
-		for _, op := range query_options {
-			if arguments[op] != nil {
-				Args[op] = arguments[op].(string)
-			}
+		// issue url
+		url, err := SearchQuery(query, author, title, after, before, start, num)
+		if err != nil {
+			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
 		}
 
-		ok := false
-		for _, op := range query_options {
-			if arguments[op] != nil {
-				ok = true
-				break
-			}
+		// get doc from url
+		d, err := goquery.NewDocument(url)
+		if err != nil {
+			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
-		if !ok {
-			log.Fatal("Wrong arguments: at least one of --author, --title or --query is needed.")
-		}
+		doc = d
 	} else if arguments["find"].(bool) { // TODO: remove --num parameter (write --num=1 directly in this block)
 		if arguments["--num"] == nil && n == 10 {
 			n = 1
 		}
-
 		// get doc
-		query, err := FindQuery(cluster_id, num)
+		url, err := FindQuery(cluster_id, num)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
 		}
-		d, err := goquery.NewDocument(query)
+		d, err := goquery.NewDocument(url)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
 		doc = d
 	} else if arguments["cite"].(bool) {
 		// get doc
-		query, err := CiteQuery(cluster_id, after, before, num, start)
+		url, err := CiteQuery(cluster_id, after, before, num, start)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to parse query for find subcommand: %v", err.Error()))
 		}
-		d, err := goquery.NewDocument(query)
+		d, err := goquery.NewDocument(url)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("failed to get goquery.Document from the query: %v", err.Error()))
 		}
