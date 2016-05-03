@@ -89,7 +89,29 @@ Others:
 		// output
 		fmt.Println(as.Json()) // TODO: check --json, --bibtex
 	} else if arguments["cite"].(bool) {
+		// set parameters
+		var cluster_id, after, before, num_search, start string
+		if arguments["<cluster-id>"] != nil {
+			cluster_id = arguments["<cluster-id>"].(string)
+		}
+		if arguments["--after"] != nil {
+			after = arguments["--after"].(string)
+		}
+		if arguments["--before"] != nil {
+			before = arguments["--before"].(string)
+		}
+		if arguments["--num_search"] != nil {
+			num_search = arguments["num_search"].(string)
+		}
+		if arguments["--start"] != nil {
+			num_search = arguments["start"].(string)
+		}
 
+		fmt.Println("cluster_id: ", cluster_id)  // TODO: remove
+		fmt.Println("after ", after)  // TODO: remove
+		fmt.Println("before: ", before)  // TODO: remove
+		fmt.Println("num_search: ", num_search)  // TODO: remove
+		fmt.Println("start: ", start)  // TODO: remove
 	} else {
 		log.Fatal("Wrong arguments.")
 	}
