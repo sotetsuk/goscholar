@@ -37,7 +37,7 @@ func TestFindQuery(t *testing.T) {
 
 func TestCiteQuery(t *testing.T) {
 	// exec citeQuery()
-	query, err := CiteQuery("8108748482885444188", "", "2012", "20", "40")
+	query, err := CiteQuery("8108748482885444188", "2012", "", "40", "20")
 	if err != nil {
 		t.Error(fmt.Sprintf("citeQuery() failed to return values: %v", err.Error()))
 	}
