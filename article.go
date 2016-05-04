@@ -129,5 +129,12 @@ func (a *Article) Json() string {
 }
 
 func (a *Article) IsValid() bool {
+	// Avlid author-contamination. See #29 for details.
+	title_validation := strings.HasPrefix(a.Title, "User profiles for")
+	url_validation := strings.HasPrefix(a.URL, "/citations?view_op=search_authors")
+	if title_validation && url_validation {
+		return false
+	}
+
 	return true
 }

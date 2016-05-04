@@ -93,8 +93,19 @@ func TestParseFooter(t *testing.T) {
 }
 
 func TestIsValid(t *testing.T) {
+	// fetch goquery.Document
+	url := "https://scholar.google.co.jp/scholar?hl=en&q=author:\"Bengio\""
+	doc, err := goquery.NewDocument(url)
+	if err != nil {
+		t.Error(fmt.Sprintf("URL is not valid: %v", err.Error()))
+	}
+
+	// parse
 	a := NewArticle()
-	expected := true
+	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
+
+	// check
+	expected := false
 	if v := a.IsValid(); v != expected {
 		t.Error(fmt.Sprintf("Expected: %v\n Actual: %v", expected, v))
 	}
