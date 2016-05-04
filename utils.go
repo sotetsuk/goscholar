@@ -33,7 +33,7 @@ func parseInfoId(url string) string {
 	return strings.TrimSpace(url)
 }
 
-func parsePDFLink(s string) string {
+func parsePDFSource(s string) string {
 	// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
 	prefix := "[PDF] from "
 	suffix := " [PDF]"

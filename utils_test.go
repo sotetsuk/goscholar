@@ -5,11 +5,11 @@ import (
 	"fmt"
 )
 
-func TestParsePDFLink(t *testing.T) {
+func TestParsePDFSource(t *testing.T) {
 	s := "[PDF] from arxiv.orgarxiv.org [PDF]"
 	expected := "arxiv.org"
 
-	PDFLink := parsePDFLink(s)
+	PDFLink := parsePDFSource(s)
 	if PDFLink != expected {
 		t.Error(fmt.Sprintf("TestParsePdfLink failed:\n  Expected: %v\n    Actual: %v", expected, PDFLink))
 	}
