@@ -95,5 +95,8 @@ Others:
   --version
 ```
 
+## Contribute
+Contritubing is more than welcome! See [Issues](https://github.com/sotetsuk/go-scholar/issues) for what is required.
+
 ## License
 MIT License
