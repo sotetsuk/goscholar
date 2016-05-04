@@ -33,6 +33,17 @@ func parseInfoId(url string) string {
 	return strings.TrimSpace(url)
 }
 
+func parsePDFLink(s string) string {
+	// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
+	prefix := "[PDF] from "
+	suffix := " [PDF]"
+	if strings.HasPrefix(s, prefix) && strings.HasSuffix(s, suffix) {
+		s = strings.TrimSpace(s[len(prefix):len(s) - len(suffix)])
+		return s[:len(s) / 2]
+	}
+	return ""
+}
+
 func StartAndEndWithDoubleQuotation(s string) bool {
 	if strings.HasPrefix(s, "\"") && strings.HasSuffix(s, "\"") {
 		return true
