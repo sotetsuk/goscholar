@@ -79,7 +79,7 @@ func (a *Article) parseFooter(s *goquery.Selection) {
 func (a *Article) parseSideBar(s *goquery.Selection) {
 	sideBarA := s.Find(ARTICLE_SIDEBAR_SELECTOR)
 	a.PDFLink, _ = sideBarA.Attr("href")
-	a.PDFSource = sideBarA.Text()
+	a.PDFSource = parsePDFSource(sideBarA.Text())
 }
 
 /*
