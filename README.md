@@ -15,6 +15,50 @@ $ go get github.com/sotetsuk/go-scholar
 $ go-scholar -h
 ```
 
+## Feature
+- search by keywords, title, and author
+- find by ```<cluster-id>```
+- fetch citing articles of ```<cluster-id>```
+- crawl recursively **not implemented yet**
+- JSON output
+
+## Example 
+
+```
+$ go-scholar search --title "Deep learning via Hessian-free optimization" --num 1 | python -mjson.tool
+[
+    {
+        "ClusterId": "15502119379559163003",
+        "InfoId": "e6RSJHGXItcJ",
+        "NumberOfCitations": "260",
+        "NumberOfVersions": "9",
+        "PDFLink": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf",
+        "PDFSource": "wustl.edu",
+        "Title": "Deep learning via Hessian-free optimization",
+        "URL": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf",
+        "Year": "2010"
+    }
+]
+```
+
+
+```
+$ go-scholar find 8108748482885444188 | python -mjson.tool
+[
+    {
+        "ClusterId": "8108748482885444188",
+        "InfoId": "XOJff8gPiHAJ",
+        "NumberOfCitations": "376",
+        "NumberOfVersions": "",
+        "PDFLink": "",
+        "PDFSource": "",
+        "Title": "Learning in science: A comparison of deep and surface approaches",
+        "URL": "http://onlinelibrary.wiley.com/doi/10.1002/(SICI)1098-2736(200002)37:2%3C109::AID-TEA3%3E3.0.CO;2-7/abstract",
+        "Year": "2000"
+    }
+]
+```
+
 ## Usage
 
 ```
