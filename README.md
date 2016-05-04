@@ -69,7 +69,7 @@ Usage:
   go-scholar search [--author=<author>] [--title=<title>] [--query=<query>]
                     [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
                     [--json|--bibtex]
-  go-scholar find <cluster-id> [--num=<num>] [--json|--bibtex]
+  go-scholar find <cluster-id> [--json|--bibtex]
   go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
   go-scholar -h | --help
   go-scholar --version
