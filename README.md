@@ -19,7 +19,7 @@ $ go-scholar -h
 - search by keywords, title, and author
 - find by ```<cluster-id>```
 - fetch citing articles of ```<cluster-id>```
-- crawl recursively **not implemented yet**
+- crawl recursively (**not implemented yet**)
 - JSON output
 
 ## Example 
