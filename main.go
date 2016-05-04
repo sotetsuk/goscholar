@@ -54,8 +54,8 @@ Others:
 	if arguments["--title"] != nil {
 		title = arguments["--title"].(string)
 	}
-	if arguments["query"] != nil {
-		query = arguments["query"].(string)
+	if arguments["--query"] != nil {
+		query = arguments["--query"].(string)
 	}
 	if arguments["<cluster-id>"] != nil {
 		cluster_id = arguments["<cluster-id>"].(string)
