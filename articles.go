@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
-	"log"
+	"fmt"
 )
 
 const (
@@ -11,31 +10,40 @@ const (
 )
 
 type Articles struct {
-	articles []*Article
+	articles chan *Article
 }
 
-func NewArticles(n int) *Articles {
+func NewArticles(buffer_size int) *Articles {
 	as := Articles{}
-	as.articles = make([]*Article, n)
+	as.articles = make(chan *Article, buffer_size)
 	return &as
 }
 
 func (as *Articles) ParseAllArticles(doc *goquery.Document, useBibTeX bool) {
+	defer close(as.articles)
+
 	parse := func(i int, s *goquery.Selection) {
 		a := NewArticle()
 		a.Parse(s, useBibTeX)
-		if i >= len(as.articles) { // TODO: fix how to treat slice length
-			return
+
+		// Add this Article to Articles
+		if a.IsValid() {
+			as.articles <- a
 		}
-		as.articles[i] = a
 	}
 	doc.Find(WHOLE_ARTICLE_SELECTOR).Each(parse)
 }
 
-func (as *Articles) Json() string {
-	bytes, err := json.Marshal(as.articles)
-	if err != nil {
-		log.Fatal(err)
+func (as *Articles) StdoutJson() {
+	fmt.Printf("[")
+	initial_flag := true
+	for a := range as.articles {
+		if initial_flag {
+			fmt.Print(a.Json())
+			initial_flag = false
+		} else {
+			fmt.Print(",", a.Json())
+		}
 	}
-	return string(bytes)
+	fmt.Println("]")
 }

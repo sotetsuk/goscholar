@@ -91,3 +91,11 @@ func TestParseFooter(t *testing.T) {
 	fmt.Println("NumberOfValidations: ", a.NumberOfVersions)
 	fmt.Println("InfoId: ", a.InfoId)
 }
+
+func TestIsValid(t *testing.T) {
+	a := NewArticle()
+	expected := true
+	if v := a.IsValid(); v != expected {
+		t.Error(fmt.Sprintf("Expected: %v\n Actual: %v", expected, v))
+	}
+}

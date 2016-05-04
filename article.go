@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
+	"encoding/json"
+	"log"
 )
 
 const (
@@ -103,16 +105,29 @@ func (a *Article) crawlAndParseBibTeX() {
 }
 */
 
-func (a *Article) dump() {
-	fmt.Println("title :", a.Title)
-	fmt.Println("year :", a.Year)
-	// fmt.Println("autho :", a.Author)
-	fmt.Println("url: ", a.URL)
-	fmt.Println("cluster_id: ", a.ClusterId)
-	fmt.Println("# of citations: ", a.NumberOfVersions)
-	fmt.Println("# of versions: ", a.NumberOfCitations)
-	fmt.Println("infor id: ", a.InfoId)
-	fmt.Println("pdfLink: ", a.PDFLink)
-	fmt.Println("pdfSource: ", a.PDFSource)
-	// fmt.Println("BibTeX: ", a.Bibtex)
+func (a *Article) String() string {
+	title := fmt.Sprintf("title: %v\n", a.Title)
+	year := fmt.Sprintf("year: %v\n", a.Year)
+	url := fmt.Sprintf("url: %v\n", a.URL)
+	cluster_id := fmt.Sprintf("cluster_id: %v\n", a.ClusterId)
+	num_citations := fmt.Sprintf("# of citations: %v\n", a.NumberOfVersions)
+	num_versions := fmt.Sprintf("$ of versions: %v\n", a.NumberOfVersions)
+	info_id := fmt.Sprintf("info id: %v\n", a.InfoId)
+	pdf_link := fmt.Sprintf("pdf link: %v\n", a.PDFLink)
+	pdf_source := fmt.Sprintf("pdfSource: %v", a.PDFSource)
+	ret := title + year + url + cluster_id + num_citations + num_versions + info_id + pdf_link + pdf_source
+
+	return ret
+}
+
+func (a *Article) Json() string {
+	bytes, err := json.Marshal(a)
+	if err != nil {
+		log.Fatal(fmt.Sprintf("failed json convert %v\n Values:\n%v", err, a))
+	}
+	return string(bytes)
+}
+
+func (a *Article) IsValid() bool {
+	return true
 }
