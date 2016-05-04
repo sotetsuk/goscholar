@@ -6,8 +6,9 @@ import (
 	"github.com/docopt/docopt-go"
 	"log"
 	"os"
-	"strconv"
 )
+
+const ARTICLES_BUFFER = 100000
 
 func main() {
 	version := "go-scholar 0.0.1"
@@ -76,13 +77,6 @@ Others:
 		num = "10"
 	}
 
-	n := 10
-	if m, err := strconv.Atoi(num); err != nil {
-		log.Fatal(fmt.Sprintf("failed to parse --num. --num parameter should be int: %v", err.Error()))
-	} else {
-		n = m
-	}
-
 	var doc *goquery.Document
 
 	if arguments["search"].(bool) {
@@ -99,9 +93,6 @@ Others:
 		}
 		doc = d
 	} else if arguments["find"].(bool) { // TODO: remove --num parameter (write --num=1 directly in this block)
-		if arguments["--num"] == nil && n == 10 {
-			n = 1
-		}
 		// get doc
 		url, err := FindQuery(cluster_id, num)
 		if err != nil {
@@ -127,10 +118,8 @@ Others:
 		log.Fatal("Wrong arguments. [search|find|cite] is valid.")
 	}
 
-	// parse
-	as := NewArticles(n) // TODO: this n is not appropriate. another parameter is required.
-	as.ParseAllArticles(doc, false)
-
-	// results > STDOUT
-	fmt.Println(as.Json()) // TODO: check --json, --bibtex
+	// parse and output
+	as := NewArticles(ARTICLES_BUFFER)
+	go as.ParseAllArticles(doc, false)
+	as.StdoutJson()  // TODO: treat --json|--bibtex parameters
 }
