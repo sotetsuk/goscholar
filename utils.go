@@ -49,14 +49,14 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 	url, err := query(arguments)
 	log.WithFields(log.Fields{"url": url}).Info("URL is generated")
 	if err != nil {
-		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Info("[ERROR] Generating Query failed")
+		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Error("Generating Query failed")
 		return nil, err
 	}
 
 	doc, err := goquery.NewDocument(url)
 	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("goquery.Document is generated")
 	if err != nil {
-		log.WithFields(log.Fields{"url": url, "err": err}).Info("[ERROR] Generating goquery.Documentation failed")
+		log.WithFields(log.Fields{"url": url, "err": err}).Error("Generating goquery.Documentation failed")
 		return nil, err
 	}
 
@@ -66,7 +66,7 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 		return nil, errors.New("Robot check occurs")
 	}
 
-	// TODO: check if this check works well
+	// check the "To continue, please type the characters below:". See #55
 	if strings.Contains(doc.Url.String(), "sorry") {
 		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Request is rejected from Google")
 		return nil, errors.New("Request is rejected from Google")
