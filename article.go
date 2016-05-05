@@ -5,7 +5,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 	"encoding/json"
-	"log"
+	log "github.com/Sirupsen/logrus"
 )
 
 const (
@@ -88,18 +88,15 @@ func (a *Article) parseSideBar(s *goquery.Selection) {
 func (a *Article) crawlAndParseBibTeX() {
 	popURL, err := CitePopUpQuery(a.InfoId)
 	if err != nil {
-		log.Fatal(err)
 	}
 
 	popDoc, err := goquery.NewDocument(popURL)
 	if err != nil {
-		log.Fatal(err)
 	}
 
 	bibURL, _ := popDoc.Find("#gs_citi > a:first-child").Attr("href")
 	bibDoc, err := goquery.NewDocument(SCHOLAR_URL + bibURL)
 	if err != nil {
-		log.Fatal(err)
 	}
 	a.Bibtex = bibDoc.Text()
 }
@@ -123,7 +120,7 @@ func (a *Article) String() string {
 func (a *Article) Json() string {
 	bytes, err := json.Marshal(a)
 	if err != nil {
-		log.Fatal(fmt.Sprintf("failed json convert %v\n Values:\n%v", err, a))
+		log.WithFields(log.Fields{"a": a, "err":err}).Info("article.Json failed")
 	}
 	return string(bytes)
 }
