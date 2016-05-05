@@ -23,12 +23,16 @@ func SearchQuery(arguments map[string]interface{}) (string, error) {
 	searchQuery := func(query, author, title, after, before, num, start string) (string, error) {
 		q := query
 		if author != "" {
-			if !StartAndEndWithDoubleQuotation(author) {
+			if startAndEndWithDoubleQuotation(author) {
+				q += "+author:" + author
+			} else {
 				q += "+author:\"" + author + "\""
 			}
 		}
 		if title != "" {
-			if !StartAndEndWithDoubleQuotation(title) {
+			if startAndEndWithDoubleQuotation(title) {
+				q += title
+			} else {
 				q += "+\"" + title + "\""
 			}
 		}

@@ -115,7 +115,7 @@ func parsePDFSource(s string) string { // TODO: fix
 	return ""
 }
 
-func StartAndEndWithDoubleQuotation(s string) bool {
+func startAndEndWithDoubleQuotation(s string) bool {
 	if strings.HasPrefix(s, "\"") && strings.HasSuffix(s, "\"") {
 		return true
 	} else {
