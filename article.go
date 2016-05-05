@@ -6,10 +6,11 @@ import (
 	"strings"
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
+	"regexp"
 )
 
 const (
-	ARTICLE_TITLE_SELECTOR   = ".gs_rt > a"
+	ARTICLE_TITLE_SELECTOR   = "h3.gs_rt > a"
 	ARTICLE_HEADER_SELECTOR  = ".gs_a"
 	ARTICLE_FOOTER_SELECTOR  = ".gs_fl"
 	ARTICLE_SIDEBAR_SELECTOR = ".gs_md_wp > a"
@@ -48,8 +49,16 @@ func (a *Article) Parse(s *goquery.Selection, useBibTeX bool) {
 
 func (a *Article) parseTitle(s *goquery.Selection) {
 	h3Title := s.Find(ARTICLE_TITLE_SELECTOR)
-	a.URL, _ = h3Title.Attr("href")
-	a.Title = h3Title.Text()
+	url, exists := h3Title.Attr("href")
+
+	if exists {
+		a.URL = url
+		a.Title = h3Title.Text()
+	} else {
+		title := s.Find("h3").Text()
+		rep, _ := regexp.Compile("\\[[a-zA-Z0-9]*\\]\\[[a-zA-Z0-9]*\\]\\s")
+		a.Title = rep.ReplaceAllString(title, "")
+	}
 }
 
 func (a *Article) parseHeader(s *goquery.Selection) {
