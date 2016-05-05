@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
 	"errors"
+	"fmt"
 )
 
 func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
@@ -60,9 +61,10 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 		return nil, err
 	}
 
-	// check the "Please show you're not a robot" page. See #61
-	if doc.Find("h1").First().Text() == "Please show you're not a robot" {
-		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Robot check occurs")
+	// 1. check the "Please show you're not a robot" page. See #61
+	// 2. check the "We're sorry..."
+	if s := doc.Find("h1").First().Text(); strings.Contains(s, "robot") || strings.Contains(s, "sorry") {
+		log.WithFields(log.Fields{"h1":s, "doc.Url": doc.Url}).Error("Robot check occurs")
 		return nil, errors.New("Robot check occurs")
 	}
 
@@ -102,7 +104,7 @@ func parseInfoId(url string) string {
 	return strings.TrimSpace(url)
 }
 
-func parsePDFSource(s string) string {
+func parsePDFSource(s string) string { // TODO: fix
 	// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
 	prefix := "[PDF] from "
 	suffix := " [PDF]"
@@ -119,4 +121,9 @@ func StartAndEndWithDoubleQuotation(s string) bool {
 	} else {
 		return false
 	}
+}
+
+func trimParameter(url string, trimming string) string {
+	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9_]*`, trimming))
+	return rep.ReplaceAllString(url, "")
 }

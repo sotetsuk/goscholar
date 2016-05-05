@@ -6,21 +6,14 @@ import (
 	"github.com/docopt/docopt-go"
 	"testing"
 	"strconv"
+	"errors"
 )
 
-type FailParserTestError struct {
-	a, aExpected *Article
-}
-
-func (e FailParserTestError) Error() string {
-	return "\n[Expected]\n" + e.aExpected.String()  + "\n---\n[Actual]\n" + e.a.String()
-}
-
-func CheckParseResults(args []string, aExpected *Article) error {
+func checkWithFirst(query func(map[string]interface{}) (string, error), args []string, aExpected *Article) error {
 	arguments, _ := docopt.Parse(USAGE, args[1:], true , VERSION, false)
-	doc, err := getDoc(FindQuery, arguments)
+	doc, err := getDoc(query, arguments)
 	if err != nil{
-		return nil
+		return err
 	}
 
 	a := NewArticle()
@@ -28,7 +21,8 @@ func CheckParseResults(args []string, aExpected *Article) error {
 
 	// check
 	if !a.Same(aExpected) {
-		return FailParserTestError{a, aExpected}
+		a.showDifference(aExpected)
+		return errors.New("") // TODO: fill
 	}
 
 	return nil
@@ -43,12 +37,12 @@ func TestParseCase1(t *testing.T) {
 	aExpected.URL = "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
 	aExpected.ClusterId = "3391028632449519147"
 	aExpected.NumberOfCitations = "10431"
-	aExpected.NumberOfVersions = "14"
+	aExpected.NumberOfVersions = "" // find cannot extract the versions
 	aExpected.InfoId = "Kw5VJJNaDy8J"
-	aExpected.PDFLink = "http://dip.sun.ac.za/~hanno/tw796/lesings/mlss06au_scholkopf_lk.pdf"
-	aExpected.PDFSource = "sun.ac.za"
+	aExpected.PDFLink = "" // find cannnot extract the verions
+	aExpected.PDFSource = "" // find cannot extract the verions
 
-	if err := CheckParseResults(args, aExpected); err != nil {
+	if err := checkWithFirst(FindQuery, args, aExpected); err != nil {
 		t.Error(err)
 	}
 }
