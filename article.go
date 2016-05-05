@@ -134,7 +134,7 @@ func (a *Article) Json() string {
 	return string(bytes)
 }
 
-func (a *Article) IsValid() bool {
+func (a *Article) isValid() bool {
 	// Avlid author-contamination. See #29 for details.
 	title_validation := strings.HasPrefix(a.Title, "User profiles for")
 	url_validation := strings.HasPrefix(a.URL, "/citations?view_op=search_authors")
@@ -145,7 +145,7 @@ func (a *Article) IsValid() bool {
 	return true
 }
 
-func (a *Article) Same(b *Article) bool {
+func (a *Article) same (b *Article) bool {
 	title := a.Title == b.Title
 	year := a.Year == b.Year
 	url := a.hasSameURL(b)

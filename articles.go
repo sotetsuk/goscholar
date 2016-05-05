@@ -17,7 +17,7 @@ func ParseArticles(ch chan *Article, doc *goquery.Document, useBibTeX bool) {
 		a.Parse(s, useBibTeX)
 
 		// Add this Article to Articles
-		if a.IsValid() {
+		if a.isValid() {
 			ch <- a
 		}
 	}

@@ -20,7 +20,7 @@ func checkWithFirst(query func(map[string]interface{}) (string, error), args []s
 	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
 
 	// check
-	if !a.Same(aExpected) {
+	if !a.same(aExpected) {
 		a.showDifference(aExpected)
 		return errors.New("") // TODO: fill
 	}
@@ -139,7 +139,7 @@ func TestIsValid(t *testing.T) {
 
 	// check
 	expected := false
-	if v := a.IsValid(); v != expected {
+	if v := a.isValid(); v != expected {
 		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, v))
 	}
 }
