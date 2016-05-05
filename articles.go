@@ -9,18 +9,8 @@ const (
 	WHOLE_ARTICLE_SELECTOR = ".gs_r"
 )
 
-type Articles struct {
-	articles chan *Article
-}
-
-func NewArticles(buffer_size int) *Articles {
-	as := Articles{}
-	as.articles = make(chan *Article, buffer_size)
-	return &as
-}
-
-func (as *Articles) ParseAllArticles(doc *goquery.Document, useBibTeX bool) {
-	defer close(as.articles)
+func ParseArticles(ch chan *Article, doc *goquery.Document, useBibTeX bool) {
+	defer close(ch)
 
 	parse := func(i int, s *goquery.Selection) {
 		a := NewArticle()
@@ -28,16 +18,16 @@ func (as *Articles) ParseAllArticles(doc *goquery.Document, useBibTeX bool) {
 
 		// Add this Article to Articles
 		if a.IsValid() {
-			as.articles <- a
+			ch <- a
 		}
 	}
 	doc.Find(WHOLE_ARTICLE_SELECTOR).Each(parse)
 }
 
-func (as *Articles) StdoutJson() {
+func StdoutArticleAsJson(ch chan *Article) {
 	fmt.Printf("[")
 	initial_flag := true
-	for a := range as.articles {
+	for a := range ch {
 		if initial_flag {
 			fmt.Print(a.Json())
 			initial_flag = false
