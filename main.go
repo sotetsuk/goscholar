@@ -5,6 +5,7 @@ import (
 	"github.com/docopt/docopt-go"
 	log "github.com/Sirupsen/logrus"
 	"os"
+	"strings"
 )
 
 const (
@@ -87,6 +88,11 @@ func Doc(query func(map[string]interface{}) (string, error), arguments map[strin
 
 	doc, err := getDoc(url)
 	if err != nil {
+		return nil, err
+	}
+
+	if strings.Contains(doc.Url.String(), "sorry") {
+		log.WithFields(log.Fields{"doc.Url": doc.Url}).Info("Request was rejected from Google")
 		return nil, err
 	}
 
