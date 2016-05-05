@@ -107,7 +107,7 @@ func (a *Article) String() string {
 	year := fmt.Sprintf("year: %v\n", a.Year)
 	url := fmt.Sprintf("url: %v\n", a.URL)
 	cluster_id := fmt.Sprintf("cluster_id: %v\n", a.ClusterId)
-	num_citations := fmt.Sprintf("# of citations: %v\n", a.NumberOfVersions)
+	num_citations := fmt.Sprintf("# of citations: %v\n", a.NumberOfCitations)
 	num_versions := fmt.Sprintf("$ of versions: %v\n", a.NumberOfVersions)
 	info_id := fmt.Sprintf("info id: %v\n", a.InfoId)
 	pdf_link := fmt.Sprintf("pdf link: %v\n", a.PDFLink)
