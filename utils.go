@@ -123,6 +123,6 @@ func StartAndEndWithDoubleQuotation(s string) bool {
 }
 
 func trimParameter(url string, trimming string) string {
-	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9]*`, trimming))
+	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9_]*`, trimming))
 	return rep.ReplaceAllString(url, "")
 }
