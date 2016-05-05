@@ -44,22 +44,23 @@ func parseAndInitializeArguments(arguments map[string]interface{}) (query, autho
 	return author, title, query, cluster_id, after, before, num, start
 }
 
-func getUrl(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (string, error) {
+func getDoc(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (*goquery.Document, error) {
 	url, err := query(arguments)
-	log.WithFields(log.Fields{"url": url}).Info("getURL is called")
+	log.WithFields(log.Fields{"url": url}).Info("URL is generated")
 	if err != nil {
-		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Info("[ERROR] getUrl failed")
-		return "", err
+		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Info("[ERROR] Generating Query failed")
+		return nil, err
 	}
 
-	return url, nil
-}
-
-func getDoc(url string) (*goquery.Document, error) {
 	doc, err := goquery.NewDocument(url)
-	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("getDoc is called")
+	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("goquery.Document is generated")
 	if err != nil {
-		log.WithFields(log.Fields{"url": url, "err": err}).Info("[ERROR] getDoc failed")
+		log.WithFields(log.Fields{"url": url, "err": err}).Info("[ERROR] Generating goquery.Documentation failed")
+		return nil, err
+	}
+
+	if strings.Contains(doc.Url.String(), "sorry") {
+		log.WithFields(log.Fields{"doc.Url": doc.Url}).Info("Request was rejected from Google")
 		return nil, err
 	}
 

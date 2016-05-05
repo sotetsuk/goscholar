@@ -5,7 +5,6 @@ import (
 	"github.com/docopt/docopt-go"
 	log "github.com/Sirupsen/logrus"
 	"os"
-	"strings"
 )
 
 const (
@@ -55,19 +54,19 @@ func main() {
 	var doc *goquery.Document
 
 	if arguments["search"].(bool) {
-		d, err := Doc(SearchQuery, arguments)
+		d, err := getDoc(SearchQuery, arguments)
 		if err != nil{
 			return
 		}
 		doc = d
 	} else if arguments["find"].(bool) {
-		d, err := Doc(FindQuery, arguments)
+		d, err := getDoc(FindQuery, arguments)
 		if err != nil{
 			return
 		}
 		doc = d
 	} else if arguments["cite"].(bool) {
-		d, err := Doc(CiteQuery, arguments)
+		d, err := getDoc(CiteQuery, arguments)
 		if err != nil{
 			return
 		}
@@ -78,23 +77,4 @@ func main() {
 	as := NewArticles(ARTICLES_BUFFER)
 	go as.ParseAllArticles(doc, false)
 	as.StdoutJson()  // TODO: treat --json|--bibtex parameters
-}
-
-func Doc(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (*goquery.Document, error) {
-	url, err := getUrl(query, arguments)
-	if err != nil {
-		return nil, err
-	}
-
-	doc, err := getDoc(url)
-	if err != nil {
-		return nil, err
-	}
-
-	if strings.Contains(doc.Url.String(), "sorry") {
-		log.WithFields(log.Fields{"doc.Url": doc.Url}).Info("Request was rejected from Google")
-		return nil, err
-	}
-
-	return doc, nil
 }

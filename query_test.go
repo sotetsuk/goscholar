@@ -54,20 +54,20 @@ func TestCitePopQuery(t *testing.T) {
 }
 
 type FailQueryTestError struct {
-	query string
+	url string
 	expected string
 }
 
 func (e FailQueryTestError) Error() string {
-	return fmt.Sprintf("\nExpected: %v\n  Query   : %v", e.expected, e.query)
+	return fmt.Sprintf("\nExpected: %v\n  Query   : %v", e.expected, e.url)
 }
 
-func CheckQuery(parse func(map[string]interface{}) (string, error),args []string, expected string) error {
+func CheckQuery(query func(map[string]interface{}) (string, error),args []string, expected string) error {
 	arguments, _ := docopt.Parse(USAGE, args[1:], true, VERSION, false)
-	query, _ := parse(arguments)
+	url, _ := query(arguments)
 
-	if query != expected {
-		return FailQueryTestError{query, expected}
+	if url != expected {
+		return FailQueryTestError{url, expected}
 	}
 
 	return nil

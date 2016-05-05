@@ -18,8 +18,10 @@ func (e FailParserTestError) Error() string {
 
 func CheckParseResults(args []string, aExpected *Article) error {
 	arguments, _ := docopt.Parse(USAGE, args[1:], true , VERSION, false)
-	url, _ := FindQuery(arguments)
-	doc, _ := goquery.NewDocument(url)
+	doc, err := getDoc(FindQuery, arguments)
+	if err != nil{
+		return nil
+	}
 
 	a := NewArticle()
 	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
