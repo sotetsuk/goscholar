@@ -17,7 +17,7 @@ func checkWithFirst(query func(map[string]interface{}) (string, error), args []s
 	}
 
 	a := NewArticle()
-	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
+	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
 
 	// check
 	if !a.same(aExpected) {
@@ -135,7 +135,7 @@ func TestIsValid(t *testing.T) {
 
 	// parse
 	a := NewArticle()
-	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
+	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
 
 	// check
 	expected := false

@@ -104,8 +104,8 @@ func parseInfoId(url string) string {
 	return strings.TrimSpace(url)
 }
 
+// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
 func parsePDFSource(s string) string { // TODO: fix
-	// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
 	prefix := "[PDF] from "
 	suffix := " [PDF]"
 	if strings.HasPrefix(s, prefix) && strings.HasSuffix(s, suffix) {

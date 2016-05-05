@@ -9,12 +9,12 @@ const (
 	WHOLE_ARTICLE_SELECTOR = ".gs_r"
 )
 
-func ParseArticles(ch chan *Article, doc *goquery.Document, useBibTeX bool) {
+func ParseArticles(ch chan *Article, doc *goquery.Document) {
 	defer close(ch)
 
 	parse := func(i int, s *goquery.Selection) {
 		a := NewArticle()
-		a.Parse(s, useBibTeX)
+		a.Parse(s)
 
 		// Add this Article to Articles
 		if a.isValid() {
