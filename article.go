@@ -120,7 +120,7 @@ func (a *Article) String() string {
 func (a *Article) Json() string {
 	bytes, err := json.Marshal(a)
 	if err != nil {
-		log.WithFields(log.Fields{"a": a, "err":err}).Info("article.Json failed")
+		log.WithFields(log.Fields{"a": a, "err":err}).Error("Json encoding failed")
 	}
 	return string(bytes)
 }
