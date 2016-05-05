@@ -1,4 +1,4 @@
-package main
+package goscholar
 
 import (
 	"github.com/PuerkitoBio/goquery"
@@ -9,17 +9,17 @@ import (
 
 const (
 	ARTICLES_BUFFER = 100000
-	VERSION         = "go-scholar 0.0.1"
-	USAGE           = `go-scholar: Google Scholar crawler and scraper written in Go
+	VERSION         = "goscholar 0.0.1"
+	USAGE           = `goscholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>]
+  goscholar search [--author=<author>] [--title=<title>] [--query=<query>]
                     [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
                     [--json|--bibtex]
-  go-scholar find <cluster-id> [--json|--bibtex]
-  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
-  go-scholar -h | --help
-  go-scholar --version
+  goscholar find <cluster-id> [--json|--bibtex]
+  goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
+  goscholar -h | --help
+  goscholar --version
 
 Query-options:
   <cluster-id>
