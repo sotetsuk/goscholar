@@ -75,7 +75,7 @@ func main() {
 	}
 
 	// parse and output
-	ch := make(chan *Article)
-	go ParseArticles(ch, doc, false)
+	ch := make(chan *Article, ARTICLES_BUFFER)
+	go ParseArticles(ch, doc)
 	StdoutArticleAsJson(ch)  // TODO: treat --json|--bibtex parameters
 }

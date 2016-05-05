@@ -19,7 +19,6 @@ const (
 type Article struct {
 	Title             string
 	Year              string
-	// Authors           []string
 	URL               string
 	ClusterId         string
 	NumberOfCitations string
@@ -27,7 +26,6 @@ type Article struct {
 	InfoId            string
 	PDFLink           string
 	PDFSource         string
-	// Bibtex            string
 }
 
 func NewArticle() *Article {
@@ -35,16 +33,11 @@ func NewArticle() *Article {
 	return &a
 }
 
-func (a *Article) Parse(s *goquery.Selection, useBibTeX bool) {
+func (a *Article) Parse(s *goquery.Selection) {
 	a.parseTitle(s)
 	a.parseHeader(s)
 	a.parseFooter(s)
 	a.parseSideBar(s)
-	/*
-	if useBibTeX {
-		a.crawlAndParseBibTeX()
-	}
-	*/
 }
 
 func (a *Article) parseTitle(s *goquery.Selection) {
@@ -92,24 +85,6 @@ func (a *Article) parseSideBar(s *goquery.Selection) {
 	a.PDFLink, _ = sideBarA.Attr("href")
 	a.PDFSource = parsePDFSource(sideBarA.Text())
 }
-
-/*
-func (a *Article) crawlAndParseBibTeX() {
-	popURL, err := CitePopUpQuery(a.InfoId)
-	if err != nil {
-	}
-
-	popDoc, err := goquery.NewDocument(popURL)
-	if err != nil {
-	}
-
-	bibURL, _ := popDoc.Find("#gs_citi > a:first-child").Attr("href")
-	bibDoc, err := goquery.NewDocument(SCHOLAR_URL + bibURL)
-	if err != nil {
-	}
-	a.Bibtex = bibDoc.Text()
-}
-*/
 
 func (a *Article) String() string {
 	title := fmt.Sprintf("title: %v\n", a.Title)

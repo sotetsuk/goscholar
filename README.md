@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/sotetsuk/go-scholar.svg?branch=master)](https://travis-ci.org/sotetsuk/go-scholar)
 [![Coverage Status](https://coveralls.io/repos/github/sotetsuk/go-scholar/badge.svg?branch=master)](https://coveralls.io/github/sotetsuk/go-scholar?branch=master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+[![GitHub version](https://badge.fury.io/gh/sotetsuk%2Fgo-scholar.svg)](https://badge.fury.io/gh/sotetsuk%2Fgo-scholar)
 
 # go-scholar
 **Go**ogle **Scholar** crawler and scraper written in **Go**
