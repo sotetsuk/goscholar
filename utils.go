@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
+	"errors"
 )
 
 func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
@@ -61,7 +62,7 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 
 	if strings.Contains(doc.Url.String(), "sorry") {
 		log.WithFields(log.Fields{"doc.Url": doc.Url}).Info("Request was rejected from Google")
-		return nil, err
+		return nil, errors.New("Request was rejected from Google")
 	}
 
 	return doc, nil

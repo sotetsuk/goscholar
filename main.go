@@ -56,6 +56,7 @@ func main() {
 	if arguments["search"].(bool) {
 		d, err := getDoc(SearchQuery, arguments)
 		if err != nil{
+			log.Error("Exit for getDoc's failure")
 			return
 		}
 		doc = d
