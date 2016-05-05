@@ -61,9 +61,10 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 		return nil, err
 	}
 
-	// check the "Please show you're not a robot" page. See #61
-	if doc.Find("h1").First().Text() == "Please show you're not a robot" {
-		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Robot check occurs")
+	// 1. check the "Please show you're not a robot" page. See #61
+	// 2. check the "We're sorry..."
+	if s := doc.Find("h1").First().Text(); strings.Contains(s, "robot") || strings.Contains(s, "sorry") {
+		log.WithFields(log.Fields{"h1":s, "doc.Url": doc.Url}).Error("Robot check occurs")
 		return nil, errors.New("Robot check occurs")
 	}
 
