@@ -169,8 +169,13 @@ func (a *Article) showDifference(b *Article) {
 		fmt.Println(b.Year)
 	}
 	if !a.hasSameURL(b) {
-		fmt.Println(a.URL)
-		fmt.Println(b.URL)
+		if strings.HasPrefix(a.URL, "https://books.google.co.jp/") {
+			trimParameter(trimParameter(a.URL, "sig"), "ots")
+			trimParameter(trimParameter(b.URL, "sig"), "ots")
+		} else {
+			fmt.Println(a.URL)
+			fmt.Println(b.URL)
+		}
 	}
 	if a.ClusterId != b.ClusterId {
 		fmt.Println(a.ClusterId)

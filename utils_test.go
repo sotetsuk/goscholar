@@ -21,6 +21,8 @@ func TestTrimParameter(t *testing.T) {
 	url3 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z&sig=Z0htVnCeqaHiY7YLVRmqLJsZiBw&q&f=false"
 	url4 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS9wNaHC&sig=wi01aFoEeNwUeehXa3OpNVjvLI0"
 	url5 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
+	url6 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS9xV3Fy&sig=bjLpIzuFfjnt_LIDwFx1S-1mg7w"
+	url7 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
 
 	expected1 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z#v=onepage&q&f=false"
 	expected2 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz"
@@ -39,6 +41,11 @@ func TestTrimParameter(t *testing.T) {
 	trimmed4 := trimParameter(trimParameter(url4, "ots"), "sig")
 	trimmed5 := trimParameter(trimParameter(url5, "ots"), "sig")
 	if trimmed4 != trimmed5 {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", trimmed4, trimmed5))
+		t.Error(fmt.Sprintf("\nurl4: %v\nurl5: %v", trimmed4, trimmed5))
+	}
+	trimmed6 := trimParameter(trimParameter(url6, "ots"), "sig")
+	trimmed7 := trimParameter(trimParameter(url7, "ots"), "sig")
+	if trimmed6 != trimmed7 {
+		t.Error(fmt.Sprintf("\nurl6: %v\nurl7: %v", trimmed6, trimmed7))
 	}
 }
