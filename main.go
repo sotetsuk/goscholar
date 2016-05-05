@@ -56,6 +56,7 @@ func main() {
 	if arguments["search"].(bool) {
 		d, err := getDoc(SearchQuery, arguments)
 		if err != nil{
+			log.Error("Exit for getDoc's failure")
 			return
 		}
 		doc = d
@@ -74,7 +75,7 @@ func main() {
 	}
 
 	// parse and output
-	as := NewArticles(ARTICLES_BUFFER)
-	go as.ParseAllArticles(doc, false)
-	as.StdoutJson()  // TODO: treat --json|--bibtex parameters
+	ch := make(chan *Article)
+	go ParseArticles(ch, doc, false)
+	StdoutArticleAsJson(ch)  // TODO: treat --json|--bibtex parameters
 }
