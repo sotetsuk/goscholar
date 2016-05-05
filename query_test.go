@@ -41,15 +41,12 @@ func TestCitePopQuery(t *testing.T) {
 	info := "XOJff8gPiHAJ"
 
 	// exec NewQuery()
-	query, err := CitePopUpQuery(info)
-	if err != nil {
-		t.Error("NewQuery() of CitePopUpQuery() failed to return values: ", err.Error())
-	}
+	url, _ := CitePopUpQuery(info)
 
 	// check the results and expected results
 	expected := "https://scholar.google.co.jp/scholar?q=info:XOJff8gPiHAJ:scholar.google.com/&output=cite&scirp=0&hl=en"
-	if query != expected {
-		t.Error(fmt.Sprintf("NewQuery() returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
+	if url != expected {
+		t.Error(fmt.Sprintf("\nExpected: %v\n     URL: %v", expected, url))
 	}
 }
 
@@ -59,7 +56,7 @@ type FailQueryTestError struct {
 }
 
 func (e FailQueryTestError) Error() string {
-	return fmt.Sprintf("\nExpected: %v\n  Query   : %v", e.expected, e.url)
+	return fmt.Sprintf("\nExpected: %v\n     URL: %v", e.expected, e.url)
 }
 
 func CheckQuery(query func(map[string]interface{}) (string, error),args []string, expected string) error {

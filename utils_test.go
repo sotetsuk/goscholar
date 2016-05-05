@@ -11,7 +11,6 @@ func TestParsePDFSource(t *testing.T) {
 
 	PDFLink := parsePDFSource(s)
 	if PDFLink != expected {
-		t.Error(fmt.Sprintf("TestParsePdfLink failed:\n  Expected: %v\n    Actual: %v", expected, PDFLink))
+		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, PDFLink))
 	}
-	fmt.Println(fmt.Sprintf("PDFLink: %v", PDFLink))
 }
