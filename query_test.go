@@ -3,50 +3,37 @@ package main
 import (
 	"testing"
 	"fmt"
+	"github.com/docopt/docopt-go"
 )
 
 func TestSearchQuery(t *testing.T) {
-	// exec SearchQuery()
-	query, err := SearchQuery("deep learning", "Bengio", "", "2015", "", "20", "100")
-	if err != nil {
-		t.Error(fmt.Sprintf("SearchQuery failed to return values: %v", err.Error()))
-	}
+	// $ go-scholar search --query "deep learning" --author "y bengio" --after 2015 --num 100 --start 20
+	args := []string{"go-scholar", "search", "--query", "deep learning", "--author", "y bengio", "--after", "2015", "--num", "100", "--start", "20"}
+	expected := "https://scholar.google.co.jp/scholar?hl=en&q=deep+learning+author:\"y+bengio\"&as_ylo=2015&as_yhi=&num=100&start=20"
 
-	// check the results and expected results
-	expected := "https://scholar.google.co.jp/scholar?hl=en&q=deep+learning+author:\"Bengio\"&as_ylo=2015&as_yhi=&start=20&num=100"
-	if query != expected {
-		t.Error(fmt.Sprintf("SearchQuery returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
+	if err := CheckQuery(SearchQuery, args, expected); err != nil {
+		t.Error(err)
 	}
-	fmt.Printf("SearchQuery() returns %v\n", query)
 }
 
 func TestFindQuery(t *testing.T) {
-	// exec findQuery()
-	query, err := FindQuery("8108748482885444188", "")
-	if err != nil {
-		t.Error(fmt.Sprintf("findQuery() failed to return values: %v", err.Error()))
-	}
+	// $ go-scholar find 8108748482885444188
+	args := []string{"go-scholar", "find","8108748482885444188"}
+	expected := "https://scholar.google.co.jp/scholar?hl=en&cluster=8108748482885444188&num=1"
 
-	// check the results and expected results
-	expected := "https://scholar.google.co.jp/scholar?hl=en&cluster=8108748482885444188&num="
-	if query != expected {
-		t.Error(fmt.Sprintf("findQuery() returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
+	if err := CheckQuery(FindQuery, args, expected); err != nil {
+		t.Error(err)
 	}
-	fmt.Printf("findQuery() returns %v\n", query)
 }
 
 func TestCiteQuery(t *testing.T) {
-	// exec citeQuery()
-	query, err := CiteQuery("8108748482885444188", "2012", "", "40", "20")
-	if err != nil {
-		t.Error(fmt.Sprintf("citeQuery() failed to return values: %v", err.Error()))
+	// $ go-scholar cite 8108748482885444188 --after 2012 --num 40 --start 20
+	args := []string{"go-scholar", "cite", "8108748482885444188", "--after", "2012", "--num", "40", "--start", "20"}
+	expected := "https://scholar.google.co.jp/scholar?hl=en&cites=8108748482885444188&as_ylo=2012&as_yhi=&num=40&start=20"
+
+	if err := CheckQuery(CiteQuery, args, expected); err != nil {
+		t.Error(err)
 	}
-	expected := "https://scholar.google.co.jp/scholar?hl=en&cites=8108748482885444188&as_ylo=2012&as_yhi=&start=20&num=40"
-	// check the results and expected results
-	if query != expected {
-		t.Error(fmt.Sprintf("citeQuery() returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
-	}
-	fmt.Printf("citeQuery() returns %v\n", query)
 }
 
 func TestCitePopQuery(t *testing.T) {
@@ -64,5 +51,25 @@ func TestCitePopQuery(t *testing.T) {
 	if query != expected {
 		t.Error(fmt.Sprintf("NewQuery() returned unexpected values\n  Expected: %v\n  Query   : %v", expected, query))
 	}
-	fmt.Printf("NewQuery() returns %v\n", query)
+}
+
+type FailQueryTestError struct {
+	query string
+	expected string
+}
+
+func (e FailQueryTestError) Error() string {
+	return fmt.Sprintf("\nExpected: %v\n  Query   : %v", e.expected, e.query)
+}
+
+func CheckQuery(parse func(map[string]interface{}) (string, error),args []string, expected string) error {
+	arguments, _ := docopt.Parse(USAGE, args[1:], true, VERSION, false)
+	query, _ := parse(arguments)
+
+	if query != expected {
+		return FailQueryTestError{query, expected}
+	}
+
+	return nil
+
 }
