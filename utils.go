@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
+	"errors"
 )
 
 func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
@@ -59,9 +60,16 @@ func getDoc(query func(map[string]interface{}) (string, error), arguments map[st
 		return nil, err
 	}
 
+	// check the "Please show you're not a robot" page. See #61
+	if doc.Find("h1").First().Text() == "Please show you're not a robot" {
+		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Robot check occurs")
+		return nil, errors.New("Robot check occurs")
+	}
+
+	// TODO: check if this check works well
 	if strings.Contains(doc.Url.String(), "sorry") {
-		log.WithFields(log.Fields{"doc.Url": doc.Url}).Info("Request was rejected from Google")
-		return nil, err
+		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Request is rejected from Google")
+		return nil, errors.New("Request is rejected from Google")
 	}
 
 	return doc, nil
