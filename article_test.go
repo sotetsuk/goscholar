@@ -1,4 +1,4 @@
-package main
+package goscholar
 
 import (
 	"fmt"
@@ -29,7 +29,7 @@ func checkWithFirst(query func(map[string]interface{}) (string, error), args []s
 }
 
 func TestParseCase1(t *testing.T) {
-	args := []string{"go-scholar", "find", "3391028632449519147"}
+	args := []string{"goscholar", "find", "3391028632449519147"}
 
 	aExpected := NewArticle()
 	aExpected.Title = "Learning with kernels: support vector machines, regularization, optimization, and beyond"

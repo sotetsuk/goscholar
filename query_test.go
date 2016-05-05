@@ -1,4 +1,4 @@
-package main
+package goscholar
 
 import (
 	"testing"
@@ -6,9 +6,9 @@ import (
 	"github.com/docopt/docopt-go"
 )
 
-// $ go-scholar search --query "deep learning" --author "y bengio" --after 2015 --num 100 --start 20
+// $ goscholar search --query "deep learning" --author "y bengio" --after 2015 --num 100 --start 20
 func TestSearchQuery(t *testing.T) {
-	args := []string{"go-scholar", "search", "--query", "deep learning", "--author", "y bengio", "--after", "2015", "--num", "100", "--start", "20"}
+	args := []string{"goscholar", "search", "--query", "deep learning", "--author", "y bengio", "--after", "2015", "--num", "100", "--start", "20"}
 	expected := "https://scholar.google.co.jp/scholar?hl=en&q=deep+learning+author:\"y+bengio\"&as_ylo=2015&as_yhi=&num=100&start=20"
 
 	if err := CheckQuery(SearchQuery, args, expected); err != nil {
@@ -16,9 +16,9 @@ func TestSearchQuery(t *testing.T) {
 	}
 }
 
-// $ go-scholar find 8108748482885444188
+// $ goscholar find 8108748482885444188
 func TestFindQuery(t *testing.T) {
-	args := []string{"go-scholar", "find","8108748482885444188"}
+	args := []string{"goscholar", "find","8108748482885444188"}
 	expected := "https://scholar.google.co.jp/scholar?hl=en&cluster=8108748482885444188&num=1"
 
 	if err := CheckQuery(FindQuery, args, expected); err != nil {
@@ -26,9 +26,9 @@ func TestFindQuery(t *testing.T) {
 	}
 }
 
-// $ go-scholar cite 8108748482885444188 --after 2012 --num 40 --start 20
+// $ goscholar cite 8108748482885444188 --after 2012 --num 40 --start 20
 func TestCiteQuery(t *testing.T) {
-	args := []string{"go-scholar", "cite", "8108748482885444188", "--after", "2012", "--num", "40", "--start", "20"}
+	args := []string{"goscholar", "cite", "8108748482885444188", "--after", "2012", "--num", "40", "--start", "20"}
 	expected := "https://scholar.google.co.jp/scholar?hl=en&cites=8108748482885444188&as_ylo=2012&as_yhi=&num=40&start=20"
 
 	if err := CheckQuery(CiteQuery, args, expected); err != nil {

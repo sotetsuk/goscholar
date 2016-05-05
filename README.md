@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/sotetsuk/go-scholar.svg?branch=master)](https://travis-ci.org/sotetsuk/go-scholar)
-[![Coverage Status](https://coveralls.io/repos/github/sotetsuk/go-scholar/badge.svg?branch=master)](https://coveralls.io/github/sotetsuk/go-scholar?branch=master)
+[![Build Status](https://travis-ci.org/sotetsuk/goscholar.svg?branch=master)](https://travis-ci.org/sotetsuk/goscholar)
+[![Coverage Status](https://coveralls.io/repos/github/sotetsuk/goscholar/badge.svg?branch=master)](https://coveralls.io/github/sotetsuk/goscholar?branch=master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
-[![GitHub version](https://badge.fury.io/gh/sotetsuk%2Fgo-scholar.svg)](https://badge.fury.io/gh/sotetsuk%2Fgo-scholar)
+[![GitHub version](https://badge.fury.io/gh/sotetsuk%2Fgoscholar.svg)](https://badge.fury.io/gh/sotetsuk%2Fgoscholar)
 
-# go-scholar
+# goscholar
 **Go**ogle **Scholar** crawler and scraper written in **Go**
 
 
@@ -12,8 +12,8 @@
 Assume that `$GOPATH` is set and `$PATH` includes `$GOPATH/bin`.
 
 ```
-$ go get github.com/sotetsuk/go-scholar
-$ go-scholar -h
+$ go get github.com/sotetsuk/goscholar
+$ goscholar -h
 ```
 
 ## Feature
@@ -26,7 +26,7 @@ $ go-scholar -h
 ## Example 
 
 ```
-$ go-scholar search --title "Deep learning via Hessian-free optimization" --num 1 | python -mjson.tool
+$ goscholar search --title "Deep learning via Hessian-free optimization" --num 1 | python -mjson.tool
 [
     {
         "ClusterId": "15502119379559163003",
@@ -44,7 +44,7 @@ $ go-scholar search --title "Deep learning via Hessian-free optimization" --num 
 
 
 ```
-$ go-scholar find 8108748482885444188 | python -mjson.tool
+$ goscholar find 8108748482885444188 | python -mjson.tool
 [
     {
         "ClusterId": "8108748482885444188",
@@ -63,17 +63,17 @@ $ go-scholar find 8108748482885444188 | python -mjson.tool
 ## Usage
 
 ```
-$ go-scholar -h
-go-scholar: Google Scholar crawler and scraper written in Go
+$ goscholar -h
+goscholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--author=<author>] [--title=<title>] [--query=<query>]
+  goscholar search [--author=<author>] [--title=<title>] [--query=<query>]
                     [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
                     [--json|--bibtex]
-  go-scholar find <cluster-id> [--json|--bibtex]
-  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
-  go-scholar -h | --help
-  go-scholar --version
+  goscholar find <cluster-id> [--json|--bibtex]
+  goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>] [--json|--bibtex]
+  goscholar -h | --help
+  goscholar --version
 
 Query-options:
   <cluster-id>
@@ -97,7 +97,7 @@ Others:
 ```
 
 ## Contribute
-Contritubing is more than welcome! See [Issues](https://github.com/sotetsuk/go-scholar/issues) for what is required.
+Contritubing is more than welcome! See [Issues](https://github.com/sotetsuk/goscholar/issues) for what is required.
 
 ## License
 MIT License

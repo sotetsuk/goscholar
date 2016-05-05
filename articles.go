@@ -1,4 +1,4 @@
-package main
+package goscholar
 
 import (
 	"github.com/PuerkitoBio/goquery"
