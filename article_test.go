@@ -3,10 +3,53 @@ package main
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/docopt/docopt-go"
 	"testing"
 	"strconv"
 )
 
+type FailParserTestError struct {
+	a, aExpected *Article
+}
+
+func (e FailParserTestError) Error() string {
+	return "\n" + e.a.String() + "\n---\n" + e.aExpected.String()
+}
+
+func CheckParseResults(args []string, aExpected *Article) error {
+	arguments, _ := docopt.Parse(USAGE, args[1:], true , VERSION, false)
+	url, _ := FindQuery(arguments)
+	doc, _ := goquery.NewDocument(url)
+
+	a := NewArticle()
+	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First(), false)
+
+	// check
+	if !a.Same(aExpected) {
+		return FailParserTestError{a, aExpected}
+	}
+
+	return nil
+}
+
+func TestParseCase1(t *testing.T) {
+	args := []string{"go-scholar", "find", "3391028632449519147"}
+
+	aExpected := NewArticle()
+	aExpected.Title = "Learning with kernels: support vector machines, regularization, optimization, and beyond"
+	aExpected.Year = "2002"
+	aExpected.URL = "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
+	aExpected.ClusterId = "3391028632449519147"
+	aExpected.NumberOfCitations = "10431"
+	aExpected.NumberOfVersions = "14"
+	aExpected.InfoId = "Kw5VJJNaDy8J"
+	aExpected.PDFLink = "http://dip.sun.ac.za/~hanno/tw796/lesings/mlss06au_scholkopf_lk.pdf"
+	aExpected.PDFSource = "sun.ac.za"
+
+	if err := CheckParseResults(args, aExpected); err != nil {
+		t.Error(err)
+	}
+}
 
 func TestParseTitle(t *testing.T) {
 	// fetch goquery.Document
@@ -109,4 +152,8 @@ func TestIsValid(t *testing.T) {
 	if v := a.IsValid(); v != expected {
 		t.Error(fmt.Sprintf("Expected: %v\n Actual: %v", expected, v))
 	}
+}
+
+func TestSame(t *testing.T) {
+
 }

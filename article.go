@@ -138,3 +138,17 @@ func (a *Article) IsValid() bool {
 
 	return true
 }
+
+func (a *Article) Same(b *Article) bool {
+	title := a.Title == b.Title
+	year := a.Year == b.Year
+	url := a.URL == b.URL
+	cluster_id := a.ClusterId == b.ClusterId
+	number_of_citations := a.NumberOfCitations == b.NumberOfCitations // TODO:
+	number_of_versions := a.NumberOfVersions == b.NumberOfVersions // TODO:
+	info_id := a.InfoId == b.InfoId
+	pdf_link := a.PDFLink == b.PDFLink
+	pdf_source := a.PDFSource == b.PDFSource
+
+	return title && year && url && cluster_id && number_of_citations && number_of_versions && info_id && pdf_link && pdf_source
+}
