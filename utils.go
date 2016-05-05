@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
 	"errors"
+	"fmt"
 )
 
 func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
@@ -102,7 +103,7 @@ func parseInfoId(url string) string {
 	return strings.TrimSpace(url)
 }
 
-func parsePDFSource(s string) string {
+func parsePDFSource(s string) string { // TODO: fix
 	// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
 	prefix := "[PDF] from "
 	suffix := " [PDF]"
@@ -119,4 +120,9 @@ func StartAndEndWithDoubleQuotation(s string) bool {
 	} else {
 		return false
 	}
+}
+
+func trimParameter(url string, trimming string) string {
+	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9]*`, trimming))
+	return rep.ReplaceAllString(url, "")
 }

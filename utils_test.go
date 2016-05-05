@@ -14,3 +14,31 @@ func TestParsePDFSource(t *testing.T) {
 		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, PDFLink))
 	}
 }
+
+func TestTrimParameter(t *testing.T) {
+	url1 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z&sig=Z0htVnCeqaHiY7YLVRmqLJsZiBw#v=onepage&q&f=false"
+	url2 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
+	url3 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z&sig=Z0htVnCeqaHiY7YLVRmqLJsZiBw&q&f=false"
+	url4 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS9wNaHC&sig=wi01aFoEeNwUeehXa3OpNVjvLI0"
+	url5 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
+
+	expected1 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z#v=onepage&q&f=false"
+	expected2 := "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz"
+	expected3 := "https://books.google.co.jp/books?hl=ja&lr=&id=Tbn1l9P1220C&oi=fnd&pg=PA153&dq=deep+learning+%22y+bengio%22&ots=V3q8Fins1Z&q&f=false"
+
+	if trimmed1 := trimParameter(url1, "sig"); trimmed1 != expected1 {
+		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected1, trimmed1))
+	}
+	if trimmed2 := trimParameter(url2, "sig"); trimmed2 != expected2 {
+		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected2, trimmed2))
+	}
+	if trimmed3 := trimParameter(url3, "sig"); trimmed3 != expected3 {
+		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected3, trimmed3))
+	}
+
+	trimmed4 := trimParameter(trimParameter(url4, "ots"), "sig")
+	trimmed5 := trimParameter(trimParameter(url5, "ots"), "sig")
+	if trimmed4 != trimmed5 {
+		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", trimmed4, trimmed5))
+	}
+}

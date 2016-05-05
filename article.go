@@ -139,13 +139,59 @@ func (a *Article) IsValid() bool {
 func (a *Article) Same(b *Article) bool {
 	title := a.Title == b.Title
 	year := a.Year == b.Year
-	url := a.URL == b.URL
+	url := a.hasSameURL(b)
 	cluster_id := a.ClusterId == b.ClusterId
-	number_of_citations := a.NumberOfCitations == b.NumberOfCitations // TODO:
-	number_of_versions := a.NumberOfVersions == b.NumberOfVersions // TODO:
+	number_of_citations := a.NumberOfCitations == b.NumberOfCitations // TODO: fix
+	number_of_versions := a.NumberOfVersions == b.NumberOfVersions // TODO: fix
 	info_id := a.InfoId == b.InfoId
 	pdf_link := a.PDFLink == b.PDFLink
 	pdf_source := a.PDFSource == b.PDFSource
 
 	return title && year && url && cluster_id && number_of_citations && number_of_versions && info_id && pdf_link && pdf_source
+}
+
+func (a *Article) showDifference(b *Article) {
+	if a.Title != b.Title {
+		fmt.Println(a.Title)
+		fmt.Println(b.Title)
+	}
+	if a.Year != b.Year {
+		fmt.Println(a.Year)
+		fmt.Println(b.Year)
+	}
+	if !a.hasSameURL(b) {
+		fmt.Println(a.URL)
+		fmt.Println(b.URL)
+	}
+	if a.ClusterId != b.ClusterId {
+		fmt.Println(a.ClusterId)
+		fmt.Println(b.ClusterId)
+	}
+	if a.NumberOfCitations != b.NumberOfCitations { // TODO: fix
+		fmt.Println(a.NumberOfCitations)
+		fmt.Println(b.NumberOfCitations)
+	}
+	if a.NumberOfVersions != b.NumberOfVersions { // TODO: fix
+		fmt.Println(a.NumberOfVersions)
+		fmt.Println(b.NumberOfVersions)
+	}
+	if a.InfoId != b.InfoId {
+		fmt.Println(a.InfoId)
+		fmt.Println(b.InfoId)
+	}
+	if a.PDFLink != b.PDFLink {
+		fmt.Println(a.PDFLink)
+		fmt.Println(b.PDFLink)
+	}
+	if a.PDFSource != b.PDFSource {
+		fmt.Println(a.PDFSource)
+		fmt.Println(b.PDFSource)
+	}
+}
+
+func (a *Article) hasSameURL(b *Article) bool {
+	if strings.HasPrefix(a.URL, "https://books.google.co.jp/") {
+		return trimParameter(trimParameter(a.URL, "sig"), "ots") == trimParameter(trimParameter(b.URL, "sig"), "ots")
+	}
+	return a.URL == b.URL
 }
