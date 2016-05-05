@@ -4,6 +4,7 @@ import (
 	"strings"
 	"regexp"
 	"github.com/PuerkitoBio/goquery"
+	log "github.com/Sirupsen/logrus"
 )
 
 func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
@@ -43,14 +44,22 @@ func parseAndInitializeArguments(arguments map[string]interface{}) (query, autho
 	return author, title, query, cluster_id, after, before, num, start
 }
 
-func getDoc(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (*goquery.Document, error) {
+func getUrl(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (string, error) {
 	url, err := query(arguments)
+	log.WithFields(log.Fields{"url": url}).Info("getURL is called")
 	if err != nil {
-		return nil, err
+		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Info("[ERROR] getUrl failed")
+		return "", err
 	}
 
+	return url, nil
+}
+
+func getDoc(url string) (*goquery.Document, error) {
 	doc, err := goquery.NewDocument(url)
+	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("getDoc is called")
 	if err != nil {
+		log.WithFields(log.Fields{"url": url, "err": err}).Info("[ERROR] getDoc failed")
 		return nil, err
 	}
 
