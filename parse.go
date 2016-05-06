@@ -10,7 +10,7 @@ func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 	return nil, nil
 }
 
-func parseH3(s *goquery.Selection) (title *Title){
+func parseH3(s *goquery.Selection) (title *title){
 	return nil
 }
 
@@ -22,6 +22,6 @@ func parseBottom(s *goquery.Selection) (cluster_id, n_cite, n_ver, info_id strin
 	return "", "", "", ""
 }
 
-func parseSideBar(s *goquery.Selection) (link *Link) {
+func parseSideBar(s *goquery.Selection) (link *link) {
 	return nil
 }
