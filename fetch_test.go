@@ -13,9 +13,9 @@ func TestFetch(t *testing.T) {
 	}
 
 	expected := "Deep learning"
-	actual := doc.Find(WHOLE_ARTICLE_SELECTOR).First().Find(ARTICLE_TITLE_SELECTOR).Text()
+	actual := doc.Find(whole_article_selector).First().Find(article_h3_selector).Text()
 
 	if actual != expected {
-		t.Error(TestErr{expected:expected, actual:actual})
+		t.Error(testErr{expected:expected, actual:actual})
 	}
 }

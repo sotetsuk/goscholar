@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-type TestErr struct {
+type testErr struct {
 	expected string
 	actual string
 }
 
-func (e TestErr) Error() string {
+func (e testErr) Error() string {
 	return fmt.Sprintf("\nExpected: %v\n  Actual: %v", e.expected, e.actual)
 }
 

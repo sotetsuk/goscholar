@@ -9,6 +9,8 @@ import (
 	"fmt"
 )
 
+// ParseDocument sends the pointers of parsed Articles to the given channel.
+// The channel will be closed if there are no articles to be sent.
 func ParseDocument(ch chan *Article, doc *goquery.Document) {
 	defer close(ch)
 
@@ -20,11 +22,11 @@ func ParseDocument(ch chan *Article, doc *goquery.Document) {
 		}
 		ch <- a
 	}
-	doc.Find(WHOLE_ARTICLE_SELECTOR).Each(parse)
+	doc.Find(whole_article_selector).Each(parse)
 }
 
-// ParseSelection returns one parsed article.
-// If article is not valid (e.g., Author profile), it returns error.
+// ParseSelection returns a parsed Article.
+// If the Article is not valid (e.g., Author profile), it returns error.
 func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 	a = &Article{}
 
@@ -40,10 +42,10 @@ func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 	return a, nil
 }
 
-// parseH3 parse article title and its link
+// parseH3 an article title and its link
 func parseH3(s *goquery.Selection) (title *Title){
 	title = &Title{}
-	h3 := s.Find(ARTICLE_TITLE_SELECTOR)
+	h3 := s.Find(article_h3_selector)
 	url, exists := h3.Attr("href")
 
 	if exists {
@@ -60,14 +62,14 @@ func parseH3(s *goquery.Selection) (title *Title){
 
 // parseGreenLine parse article published year
 func parseGreenLine(s *goquery.Selection) (year string) {
-	year = parseYearText(s.Find(ARTICLE_HEADER_SELECTOR).Text())
+	year = parseYearText(s.Find(article_green_line_selector).Text())
 
 	return year
 }
 
 // parseBottom parse the line under the abstract
 func parseBottom(s *goquery.Selection) (clusterId, numCite, numVer, infoId string) {
-	divFooter := s.Find(ARTICLE_FOOTER_SELECTOR)
+	divFooter := s.Find(article_bottom_selector)
 	parseFooter := func(i int, s *goquery.Selection) {
 
 		href, _ := s.Attr("href")
@@ -94,14 +96,14 @@ func parseBottom(s *goquery.Selection) (clusterId, numCite, numVer, infoId strin
 func parseSideBar(s *goquery.Selection) (link *Link) {
 	link = &Link{}
 
-	sideBarA := s.Find(ARTICLE_SIDEBAR_SELECTOR)
+	sideBarA := s.Find(article_sidebar_selector)
 	url, exists := sideBarA.Attr("href")
 	if !exists {
 		return link
 	}
 
 	link.Url = url
-	link.Name, link.Format = parseLinkText(sideBarA.Find(SIDEBAR_TEXT_SELECTOR).Text())
+	link.Name, link.Format = parseLinkText(sideBarA.Find(sidebar_text_selector).Text())
 
 	return link
 }

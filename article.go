@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// Article stores the parsed results from Google Scholar.
 type Article struct {
 	Title             *Title
 	Year              string
@@ -18,19 +19,21 @@ type Article struct {
 	Link              *Link
 }
 
+// Title is an attribute of Article.
 type Title struct {
 	Name string
 	Url string
 }
 
+// Link is an attribute of Article
 type Link struct {
 	Name string
 	Url  string
 	Format string
 }
 
-// NewArticle creates an Article in which all entry is blank
-func NewArticle() *Article {
+// NewArticle creates an Article in which all entry is blank.
+func newArticle() *Article {
 	a := &Article{}
 	title := &Title{}
 	link := &Link{}
@@ -41,14 +44,14 @@ func NewArticle() *Article {
 	return a
 }
 
+// String provides a pretty print.
 func (a *Article) String() string {
-	ret := "-----------------------------------------------------------------------------\n"
-	ret += "[Title]\n"
+	ret := "[Title]\n"
 	ret += fmt.Sprintf("  Name: %v\n", a.Title.Name)
 	ret += fmt.Sprintf("  Url: %v\n", a.Title.Url)
 	ret += fmt.Sprintf("[Year]\n  %v\n", a.Year)
 	ret += fmt.Sprintf("[ClusterId]\n  %v\n", a.ClusterId)
-	ret += fmt.Sprintf("[NumeCite]\n  %v\n", a.NumCite)
+	ret += fmt.Sprintf("[NumCite]\n  %v\n", a.NumCite)
 	ret += fmt.Sprintf("[NumVer]\n  %v\n", a.NumVer)
 	ret += fmt.Sprintf("[InfoId]\n  %v\n", a.InfoId)
 	ret += "[Link]\n"
@@ -59,6 +62,7 @@ func (a *Article) String() string {
 	return ret
 }
 
+// Json provides JSON formatted Article.
 func (a *Article) Json() string {
 	bytes, err := json.Marshal(a)
 	if err != nil {
@@ -67,6 +71,7 @@ func (a *Article) Json() string {
 	return string(bytes)
 }
 
+// isValid checks the Article whose attributes have wrong values
 func (a *Article) isValid() bool { // TODO: fix (return error w/ message)
 	// avoid author-contamination. See #29 for details.
 	title_validation := strings.HasPrefix(a.Title.Name, "User profiles for")

@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"testing"
 	"time"
+	log "github.com/Sirupsen/logrus"
 )
 
 var url1, url2 string
@@ -63,7 +64,7 @@ func init() {
 }
 
 func checkWithFirst(doc *goquery.Document, aExpected *Article) (err error) {
-	a, err := ParseSelection(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
+	a, err := ParseSelection(doc.Find(whole_article_selector).First())
 
 	if !same(a, aExpected) {
 		showDifference(a, aExpected)
@@ -73,41 +74,39 @@ func checkWithFirst(doc *goquery.Document, aExpected *Article) (err error) {
 	return nil
 }
 
-func ExampleParseDocument() {
-	time.Sleep(3 * time.Second)
+func Example() {
+	ch := make(chan *Article, 10)
 
-	ch := make(chan *Article, 10000)
+	q := Query{Keywords:"nature 2015", Author:"y bengio", Title:"Deep learning"}
+	url := q.SearchUrl()
 
-	url := "https://scholar.google.co.jp/scholar?hl=en&q=\"deep+learning\"+author:\"y+bengio\"&as_ylo=2015&num=1"
 	doc, err := Fetch(url)
 	if err != nil {
+		log.Error(err)
 		return
 	}
 
 	go ParseDocument(ch, doc)
 	a := <- ch
 	fmt.Println(a)
-
-	return
 	// Output:
-	// -----------------------------------------------------------------------------
-	// [Title]
-	//   Name: Deep learning
-	//   Url: http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html
-	// [Year]
-	//   2015
-        // [ClusterId]
-	//   5362332738201102290
-	// [NumeCite]
-	//   390
-	// [NumVer]
-	//   7
-	// [InfoId]
-	//   0qfs6zbVakoJ
-	// [Link]
-	//   Name: psu.edu
-	//   Url: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf
-	//   Format: PDF
+	/*[Title]
+  Name: Deep learning
+  Url: http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html
+[Year]
+  2015
+[ClusterId]
+  5362332738201102290
+[NumCite]
+  390
+[NumVer]
+  7
+[InfoId]
+  0qfs6zbVakoJ
+[Link]
+  Name: psu.edu
+  Url: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf
+  Format: PDF*/
 }
 
 func TestParseSelection(t *testing.T) {
@@ -140,14 +139,14 @@ func TestParseH3(t *testing.T) {
 		t.Skip(err1)
 	}
 
-	actual := parseH3(doc1.Find(WHOLE_ARTICLE_SELECTOR).First())
+	actual := parseH3(doc1.Find(whole_article_selector).First())
 
 	if actual.Name != a1Expected.Title.Name {
-		t.Error(TestErr{expected: a1Expected.Title.Name, actual: actual.Name})
+		t.Error(testErr{expected: a1Expected.Title.Name, actual: actual.Name})
 	}
 
 	if actual.Url != a1Expected.Title.Url {
-		t.Error(TestErr{expected: a1Expected.Title.Name, actual: actual.Url})
+		t.Error(testErr{expected: a1Expected.Title.Name, actual: actual.Url})
 	}
 
 	// test case 2
@@ -155,14 +154,14 @@ func TestParseH3(t *testing.T) {
 		t.Skip(err2)
 	}
 
-	actual = parseH3(doc2.Find(WHOLE_ARTICLE_SELECTOR).First())
+	actual = parseH3(doc2.Find(whole_article_selector).First())
 
 	if actual.Name != a2Expected.Title.Name {
-		t.Error(TestErr{expected: a2Expected.Title.Name, actual: actual.Name})
+		t.Error(testErr{expected: a2Expected.Title.Name, actual: actual.Name})
 	}
 
 	if actual.Url != a2Expected.Title.Url {
-		t.Error(TestErr{expected: a2Expected.Title.Url, actual: actual.Url})
+		t.Error(testErr{expected: a2Expected.Title.Url, actual: actual.Url})
 	}
 }
 
@@ -171,10 +170,10 @@ func TestParseGreenLine(t *testing.T) {
 		t.Skip(err1)
 	}
 
-	actual := parseGreenLine(doc1.Find(WHOLE_ARTICLE_SELECTOR).First())
+	actual := parseGreenLine(doc1.Find(whole_article_selector).First())
 
 	if actual != a1Expected.Year {
-		t.Error(TestErr{expected: a1Expected.Year, actual: actual})
+		t.Error(testErr{expected: a1Expected.Year, actual: actual})
 	}
 }
 
@@ -183,13 +182,13 @@ func TestParseBottom(t *testing.T) {
 		t.Skip(err1)
 	}
 
-	clusterId, numCite, numVer, infoId := parseBottom(doc1.Find(WHOLE_ARTICLE_SELECTOR).First())
+	clusterId, numCite, numVer, infoId := parseBottom(doc1.Find(whole_article_selector).First())
 	a1ExpectedLowerNimCite := 2000
 	a1ExpectedLowerNumVer := 50
 	a1ExpectedUpperNumVer := 100
 
 	if clusterId != a1Expected.ClusterId {
-		t.Error(TestErr{expected: a1Expected.ClusterId, actual: clusterId})
+		t.Error(testErr{expected: a1Expected.ClusterId, actual: clusterId})
 	}
 	c, err := strconv.Atoi(numCite)
 	if err != nil {
@@ -197,21 +196,21 @@ func TestParseBottom(t *testing.T) {
 	}
 
 	if c <= a1ExpectedLowerNimCite {
-		t.Error("Lower bound error:", TestErr{expected: strconv.Itoa(a1ExpectedLowerNimCite), actual: numCite})
+		t.Error("Lower bound error:", testErr{expected: strconv.Itoa(a1ExpectedLowerNimCite), actual: numCite})
 	}
 	v, err := strconv.Atoi(numVer)
 	if err != nil {
 		t.Error(err)
 	}
 	if v <= a1ExpectedLowerNumVer {
-		t.Error("Lower bound error: ", TestErr{expected: strconv.Itoa(a1ExpectedLowerNumVer), actual: numVer})
+		t.Error("Lower bound error: ", testErr{expected: strconv.Itoa(a1ExpectedLowerNumVer), actual: numVer})
 	}
 	if v >= a1ExpectedUpperNumVer {
-		t.Error("Upper bound error: ", TestErr{expected: strconv.Itoa(a1ExpectedLowerNumVer), actual: numVer})
+		t.Error("Upper bound error: ", testErr{expected: strconv.Itoa(a1ExpectedLowerNumVer), actual: numVer})
 	}
 
 	if infoId != a1Expected.InfoId {
-		t.Error(TestErr{expected: a1Expected.InfoId, actual: infoId})
+		t.Error(testErr{expected: a1Expected.InfoId, actual: infoId})
 	}
 }
 
@@ -220,15 +219,15 @@ func TestParseSideBar(t *testing.T) {
 		t.Skip(err1)
 	}
 
-	link := parseSideBar(doc1.Find(WHOLE_ARTICLE_SELECTOR).First())
+	link := parseSideBar(doc1.Find(whole_article_selector).First())
 
 	if link.Name != a1Expected.Link.Name {
-		t.Error(TestErr{expected: a1Expected.Link.Name, actual: link.Name})
+		t.Error(testErr{expected: a1Expected.Link.Name, actual: link.Name})
 	}
 	if link.Url != a1Expected.Link.Url {
-		t.Error(TestErr{expected: a1Expected.Link.Url, actual: link.Url})
+		t.Error(testErr{expected: a1Expected.Link.Url, actual: link.Url})
 	}
 	if link.Format != a1Expected.Link.Format {
-		t.Error(TestErr{expected: a1Expected.Link.Format, actual: link.Format})
+		t.Error(testErr{expected: a1Expected.Link.Format, actual: link.Format})
 	}
 }

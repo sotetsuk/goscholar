@@ -6,10 +6,10 @@ import (
 	"errors"
 )
 
-var a *Article
+var article *Article
 
 func init() {
-	a = &Article{
+	article = &Article{
 		Title: &Title{
 			Name: "Deep learning via Hessian-free optimization",
 			Url:  "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},
@@ -27,7 +27,7 @@ func init() {
 }
 
 func TestNewArticle(t *testing.T) {
-	a := NewArticle()
+	a := newArticle()
 
 	title := a.Title
 	year := a.Year
@@ -66,16 +66,17 @@ func TestNewArticle(t *testing.T) {
 	}
 }
 
-func TestString(t *testing.T) {
-	expected := `-----------------------------------------------------------------------------
-[Title]
+func ExampleString() {
+	fmt.Println(article)
+	// Output:
+	/*[Title]
   Name: Deep learning via Hessian-free optimization
   Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
 [Year]
   2010
 [ClusterId]
   15502119379559163003
-[NumeCite]
+[NumCite]
   260
 [NumVer]
   9
@@ -84,24 +85,18 @@ func TestString(t *testing.T) {
 [Link]
   Name: wustl.edu
   Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
-  Format: PDF`
-
-	if actual := a.String(); actual != expected {
-		t.Error(TestErr{expected:expected, actual:actual})
-	}
+  Format: PDF*/
 }
 
-func TestJson(t *testing.T) {
-	expected := `{"Title":{"Name":"Deep learning via Hessian-free optimization","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},"Year":"2010","ClusterId":"15502119379559163003","NumCite":"260","NumVer":"9","InfoId":"e6RSJHGXItcJ","Link":{"Name":"wustl.edu","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf","Format":"PDF"}}`
-
-	if actual := a.Json(); actual != expected {
-		t.Error(TestErr{expected:expected, actual:actual})
-	}
+func ExampleJson() {
+	fmt.Println(article.Json())
+	// Output:
+	// {"Title":{"Name":"Deep learning via Hessian-free optimization","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},"Year":"2010","ClusterId":"15502119379559163003","NumCite":"260","NumVer":"9","InfoId":"e6RSJHGXItcJ","Link":{"Name":"wustl.edu","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf","Format":"PDF"}}
 }
 
 func TestIsValid(t *testing.T) {
 	// test case 1
-	aInvalid := NewArticle()
+	aInvalid := newArticle()
 	aInvalid.Title.Name = "User profiles for author:\"y bengio\""
 	aInvalid.Title.Url = "/citations?view_op=search_authors&mauthors=author:%22y+bengio%22&hl=en&oi=ao"
 
@@ -109,8 +104,8 @@ func TestIsValid(t *testing.T) {
 		t.Error(fmt.Sprintf("\n%v \nThis title should be invalid", aInvalid.Title.Name))
 	}
 
-	aInvalid = NewArticle()
-	a.Year = "1206"
+	aInvalid = newArticle()
+	aInvalid.Year = "1206"
 	if aInvalid.isValid() {
 		t.Error(fmt.Sprintf("\n%v \nThis year should be invalid", aInvalid.Year))
 	}

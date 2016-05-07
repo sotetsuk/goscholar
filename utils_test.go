@@ -5,8 +5,8 @@ import (
 )
 
 func TestSame(t *testing.T) {
-	a := NewArticle()
-	b := NewArticle()
+	a := newArticle()
+	b := newArticle()
 
 	if !same(a, b) {
 		t.Error("Two Articles should be same")
@@ -20,8 +20,8 @@ func TestSame(t *testing.T) {
 }
 
 func ExampleShowDifference() {
-	a := NewArticle()
-	b := NewArticle()
+	a := newArticle()
+	b := newArticle()
 
 	a.Title.Name = "Name of A"
 	b.Title.Name = "Name of B"

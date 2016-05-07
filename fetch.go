@@ -7,6 +7,7 @@ import (
 	"errors"
 )
 
+// Fetch gets a Document from a given URL. For usage, see the example of Overview.
 func Fetch(url string) (doc *goquery.Document, err error) {
 	log.WithFields(log.Fields{"url": url}).Info("Fetch sends request")
 
@@ -21,13 +22,13 @@ func Fetch(url string) (doc *goquery.Document, err error) {
 	// 2. check the "We're sorry..."
 	if s := doc.Find("h1").First().Text(); strings.Contains(s, "robot") || strings.Contains(s, "sorry") {
 		log.WithFields(log.Fields{"h1":s, "doc.Url": doc.Url}).Error("Robot check occurs")
-		return nil, errors.New("Robot check occurs")
+		return nil, errors.New("Failed to fetch Document")
 	}
 
 	// check the "To continue, please type the characters below:". See #55
 	if strings.Contains(doc.Url.String(), "sorry") {
 		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Request is rejected from Google")
-		return nil, errors.New("Request is rejected from Google")
+		return nil, errors.New("Failed to fetch Document")
 	}
 
 	return doc, nil
