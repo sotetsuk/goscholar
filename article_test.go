@@ -1,149 +1,112 @@
-package main
+package goscholar
 
 import (
-	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/docopt/docopt-go"
 	"testing"
-	"strconv"
+	"fmt"
 	"errors"
 )
 
-func checkWithFirst(query func(map[string]interface{}) (string, error), args []string, aExpected *Article) error {
-	arguments, _ := docopt.Parse(USAGE, args[1:], true , VERSION, false)
-	doc, err := getDoc(query, arguments)
-	if err != nil{
+var article *Article
+
+func init() {
+	article = &Article{
+		Title: &Title{
+			Name: "Deep learning via Hessian-free optimization",
+			Url:  "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},
+		Year:      "2010",
+		ClusterId: "15502119379559163003",
+		NumCite:   "260",
+		NumVer:    "9",
+		InfoId:    "e6RSJHGXItcJ",
+		Link: &Link{
+			Name:   "wustl.edu",
+			Url:    "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf",
+			Format: "PDF",
+		},
+	}
+}
+
+func TestNewArticle(t *testing.T) {
+	a := newArticle()
+
+	title := a.Title
+	year := a.Year
+	clusterId := a.ClusterId
+	numCite := a.NumCite
+	numVer := a.NumVer
+	infoId := a.InfoId
+	link := a.Link
+
+	var err error
+	checkBlank := func(s string) error {
+		if err != nil {
+			return err
+		}
+
+		if s != "" {
+			err = errors.New(fmt.Sprintf("%v is not blank", s))
+		}
+
 		return err
 	}
 
-	a := NewArticle()
-	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
+	checkBlank(title.Name)
+	checkBlank(title.Url)
+	checkBlank(year)
+	checkBlank(clusterId)
+	checkBlank(numCite)
+	checkBlank(numVer)
+	checkBlank(infoId)
+	checkBlank(link.Name)
+	checkBlank(link.Url)
+	checkBlank(link.Format)
 
-	// check
-	if !a.same(aExpected) {
-		a.showDifference(aExpected)
-		return errors.New("") // TODO: fill
-	}
-
-	return nil
-}
-
-func TestParseCase1(t *testing.T) {
-	args := []string{"go-scholar", "find", "3391028632449519147"}
-
-	aExpected := NewArticle()
-	aExpected.Title = "Learning with kernels: support vector machines, regularization, optimization, and beyond"
-	aExpected.Year = "2002"
-	aExpected.URL = "https://books.google.co.jp/books?hl=en&lr=&id=y8ORL3DWt4sC&oi=fnd&pg=PR13&ots=bKyS8zP5Iz&sig=dC5YzrzUAz8kjnEx392vrjb6cr0"
-	aExpected.ClusterId = "3391028632449519147"
-	aExpected.NumberOfCitations = "10431"
-	aExpected.NumberOfVersions = "" // find cannot extract the versions
-	aExpected.InfoId = "Kw5VJJNaDy8J"
-	aExpected.PDFLink = "" // find cannnot extract the verions
-	aExpected.PDFSource = "" // find cannot extract the verions
-
-	if err := checkWithFirst(FindQuery, args, aExpected); err != nil {
+	if err != nil {
 		t.Error(err)
 	}
 }
 
-func TestParseTitle(t *testing.T) {
-	// fetch goquery.Document
-	url := "https://scholar.google.co.jp/scholar?hl=en&q=\"Learning+deep+architectures+for+AI\"&as_ylo=&as_yhi=&start=&num="
-	doc, err := goquery.NewDocument(url)
-	if err != nil {
-		t.Error(fmt.Sprintf("Fail to get goquery.Document: %v", err.Error()))
-	}
-
-	// set expected and actual
-	a := NewArticle()
-	a.parseTitle(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
-	expected := "Learning deep architectures for AI"
-
-	// check
-	if a.Title != expected {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, a.Title))
-	}
+func ExampleString() {
+	fmt.Println(article)
+	// Output:
+	/*[Title]
+  Name: Deep learning via Hessian-free optimization
+  Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
+[Year]
+  2010
+[ClusterId]
+  15502119379559163003
+[NumCite]
+  260
+[NumVer]
+  9
+[InfoId]
+  e6RSJHGXItcJ
+[Link]
+  Name: wustl.edu
+  Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
+  Format: PDF*/
 }
 
-func TestParseHeader(t *testing.T) {
-	// fetch goquery.Document
-	url := "https://scholar.google.co.jp/scholar?hl=en&q=\"Learning+deep+architectures+for+AI\"&as_ylo=&as_yhi=&start=&num="
-	doc, err := goquery.NewDocument(url)
-	if err != nil {
-		t.Error(fmt.Sprintf("failed to get goquery.Document: %v", err.Error()))
-	}
-
-	// set expected and actual
-	a := NewArticle()
-	a.parseHeader(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
-	expected := "2009"
-
-	// check
-	if a.Year != expected {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, a.Year))
-	}
-}
-
-func TestParseFooter(t *testing.T) {
-	// fetch goquery.Document
-	url := "https://scholar.google.co.jp/scholar?hl=en&q=\"Learning+deep+architectures+for+AI\"&as_ylo=&as_yhi=&start=&num="
-	doc, err := goquery.NewDocument(url)
-	if err != nil {
-		t.Error(fmt.Sprintf("failed to get goquery.Document: %v", err.Error()))
-	}
-
-	// set expected and actual
-	a := NewArticle()
-	a.parseFooter(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
-	expectedClusterId := "5331804836605365413"
-	expectedLowerNumberOfCitations := 2000
-	expectedLowerNumberOfVersions := 50
-	expectedUpperNumberOfVersions := 100
-	expectedInfoId := "pYyS8T9g_kkJ"
-
-	// check
-	if a.ClusterId != expectedClusterId {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expectedClusterId, a.ClusterId))
-	}
-	c, err := strconv.Atoi(a.NumberOfCitations)
-	if err != nil {
-		t.Error(fmt.Sprintf("cannot convert # of citations to int: %v", err.Error()))
-	}
-	if c <= expectedLowerNumberOfCitations {
-		t.Error(fmt.Sprintf("\nExpected (more than): %v\n  Actual: %v", expectedLowerNumberOfCitations, a.NumberOfCitations))
-	}
-	v, err := strconv.Atoi(a.NumberOfVersions)
-	if err != nil{
-		t.Error(fmt.Sprintf("cannot convert # of versions to int: %v", err.Error()))
-	}
-	if v <= expectedLowerNumberOfVersions || v >= expectedUpperNumberOfVersions {
-		t.Error(fmt.Sprintf("\nExpected (between): %v and %v\n  Actual: %v", expectedLowerNumberOfVersions, expectedUpperNumberOfVersions, v))
-	}
-	if a.InfoId != expectedInfoId {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expectedInfoId, a.InfoId))
-	}
+func ExampleJson() {
+	fmt.Println(article.Json())
+	// Output:
+	// {"Title":{"Name":"Deep learning via Hessian-free optimization","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},"Year":"2010","ClusterId":"15502119379559163003","NumCite":"260","NumVer":"9","InfoId":"e6RSJHGXItcJ","Link":{"Name":"wustl.edu","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf","Format":"PDF"}}
 }
 
 func TestIsValid(t *testing.T) {
-	// fetch goquery.Document
-	url := "https://scholar.google.co.jp/scholar?hl=en&q=author:\"Bengio\""
-	doc, err := goquery.NewDocument(url)
-	if err != nil {
-		t.Error(fmt.Sprintf("failed to get goquery.Document: %v", err.Error()))
+	// test case 1
+	aInvalid := newArticle()
+	aInvalid.Title.Name = "User profiles for author:\"y bengio\""
+	aInvalid.Title.Url = "/citations?view_op=search_authors&mauthors=author:%22y+bengio%22&hl=en&oi=ao"
+
+	if aInvalid.isValid() {
+		t.Error(fmt.Sprintf("\n%v \nThis title should be invalid", aInvalid.Title.Name))
 	}
 
-	// parse
-	a := NewArticle()
-	a.Parse(doc.Find(WHOLE_ARTICLE_SELECTOR).First())
-
-	// check
-	expected := false
-	if v := a.isValid(); v != expected {
-		t.Error(fmt.Sprintf("\nExpected: %v\n  Actual: %v", expected, v))
+	aInvalid = newArticle()
+	aInvalid.Year = "1206"
+	if aInvalid.isValid() {
+		t.Error(fmt.Sprintf("\n%v \nThis year should be invalid", aInvalid.Year))
 	}
-}
-
-func TestSame(t *testing.T) {
-
 }

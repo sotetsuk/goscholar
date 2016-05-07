@@ -6,16 +6,16 @@ go:
 before_install:
   - go get github.com/axw/gocov/gocov
   - go get github.com/mattn/goveralls
-  - go get github.com/Sirupsen/logrus
   - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
 
 install:
-  - go get github.com/PuerkitoBio/goquery
   - go get github.com/docopt/docopt-go
+  - go get github.com/PuerkitoBio/goquery
+  - go get github.com/Sirupsen/logrus
 
 script:
   - $HOME/gopath/bin/goveralls -repotoken $COVERALLS_TOKEN
 
 env:
   global:
-    secure: "RCNzxxPKVQJ38Jve0dvu+VP8Guwuvm6wmgNrOIIFkDWUnKf8ZpCNpv4cqeFA3PLOWWuoa3EHxLIcnae9HkRIx1Be3uUQ+e8pq3TU0bS3yL5GtMG20DUVwS7Ely6m0fIxsi/wBM845zP94wgpgSmFV2osXwbtvbW5gJGJ3Aq7C6rQlu5gaP33OMvzV1/aSIDHWgxD2UMgV40ScuySl17fS8ab0Mnd+Jvf7NRSNFxB0Q3aysl+M5KYpAgKsvu+TYs5loqeF1OeVLtmJAe85sxpoCuCC87/lrrOzE8LVb9LLcYka6Rtrs67RXXwn9YFtSQHct2zm9FHQqUm9udUn8eaoJaSrq/L6ZDkIRS4STCU1MzYpulB+c5ujb3InqdmhdFKY6RxqgEROq5IOyXtUflD3eQno93jsEasq4V8clfvOyAlaRVhBhBECupP6q9rLTV28/qgBC3QF0P07Ia1sIIauXwiRtkFHSCqgPy6jdyxTDrl5xqpSnk7iR0A1Y9UdJXvRMOWIBUl0/YIzcKy9UT7Dz4NRKB+22gemimYmVZ6Wfh73rsiptYY1Jjzl41tXLC3KQ2kPqWRuH7x1q4sbdKaazBS/1RLHobmcHnH23oSO36+ClgM+pxsvIJUcKWMkKPiFIEE9Zqhwf71ksqJz87boa3B1wMI1WjqlqpR/tY9xnw="
+    secure: "OEFJ2jmTPx7LI3bvTdg2g2Not1PAFTYSBojun+XQyaeKRKO05CPn2mEdFAhtmEe9BwsXqk/TcidlFtAJDv1kS0r1J3wblGiYt6o/dRMmeHVG216udLxtABgKbvXt/Awz9PUD5n/82oZ+kdTc/Qk7GqjjiYhflcbs9dpJ00boWTXw2m6a6yK37RcKlyMBMZH1sHl3747WcaD1yqm+abciF0c9UfGU61fy9Up/M9bPWii7+S9V9jaHcHbqPDXmMLYWamFfWSE2+WMkvL05yuTt7KNW0VSPyYppCthkQyJ9CNa9zCIA75EyEwX/HRoDRIV75CyD1/Nzf9afHxzfZKLGa4o/uQCHNKiHL82kwmuPHvtWaC7gwN1cJ0cU46FfdhL7m4OcCrVOwDBd7cjWp/GH/dAKh8/BQIHyDL0PMuaaWFOO0GJYU6HQqWO/DsdtE4KXUFtHKzxOkfYrnHsucU9d730DFzPbMqUrub613EBxZbdp9td/DMsxNFpb3JNxqK9mbDhO+AjfHiy/yvWQuAmbjZIZkUfcCpTPrxeXngypkpjp40bkTp+lJlS8RyPP8rDO34eJDdzE90hIEvqc+d+Otv8gH7eUKXMqcRnMOdr/iIhfiF7dxUiznwMNkduu/ZOfvFg6YwdA9VJMh/vTUUZXx4SqM/VwEjuuUh3zMEdoExw="

@@ -1,129 +1,84 @@
-package main
+package goscholar
 
 import (
-	"strings"
-	"regexp"
-	"github.com/PuerkitoBio/goquery"
-	log "github.com/Sirupsen/logrus"
-	"errors"
 	"fmt"
 )
 
-func parseAndInitializeArguments(arguments map[string]interface{}) (query, author, title, cluster_id, after, before, start, num string) {
-	/*
-		default: num="10", others=""
-	*/
-
-	if arguments["--author"] != nil {
-		author = arguments["--author"].(string)
-	}
-	if arguments["--title"] != nil {
-		title = arguments["--title"].(string)
-	}
-	if arguments["--query"] != nil {
-		query = arguments["--query"].(string)
-	}
-	if arguments["<cluster-id>"] != nil {
-		cluster_id = arguments["<cluster-id>"].(string)
-	}
-	if arguments["--after"] != nil {
-		after = arguments["--after"].(string)
-	}
-	if arguments["--before"] != nil {
-		before = arguments["--before"].(string)
-	}
-	if arguments["--num"] != nil {
-		num = arguments["--num"].(string)
-	}
-	if arguments["--start"] != nil {
-		start = arguments["--start"].(string)
-	}
-
-	if num == "" {
-		num = "10"
-	}
-
-	return author, title, query, cluster_id, after, before, num, start
+type testErr struct {
+	expected string
+	actual string
 }
 
-func getDoc(query func(map[string]interface{}) (string, error), arguments map[string]interface{}) (*goquery.Document, error) {
-	url, err := query(arguments)
-	log.WithFields(log.Fields{"url": url}).Info("URL is generated")
-	if err != nil {
-		log.WithFields(log.Fields{"arguments": arguments, "err": err}).Error("Generating Query failed")
-		return nil, err
+func (e testErr) Error() string {
+	return fmt.Sprintf("\nExpected: %v\n  Actual: %v", e.expected, e.actual)
+}
+
+func same(a *Article, b *Article) (ok bool) {
+	titleName := a.Title.Name == b.Title.Name
+	titleUrl := a.Title.Url == b.Title.Url
+	year := a.Year == b.Year
+	cluster_id := a.ClusterId == b.ClusterId
+	numCite := a.NumCite == b.NumCite // TODO: fix; check by range
+	numVer := a.NumVer == b.NumVer // TODO: fix; check by range
+	info_id := a.InfoId == b.InfoId
+	linkName := a.Link.Name == b.Link.Name
+	linkUrl := a.Link.Url == b.Link.Url
+	linkFormat := a.Link.Format == b.Link.Format
+
+	return titleName && titleUrl && year && cluster_id && numCite && numVer && info_id && linkName && linkUrl && linkFormat
+}
+
+func showDifference(a *Article, b *Article) {
+	if a.Title.Name != b.Title.Name {
+		fmt.Println("Title.Name is different")
+		fmt.Println(a.Title.Name)
+		fmt.Println(b.Title.Name)
 	}
 
-	doc, err := goquery.NewDocument(url)
-	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("goquery.Document is generated")
-	if err != nil {
-		log.WithFields(log.Fields{"url": url, "err": err}).Error("Generating goquery.Documentation failed")
-		return nil, err
+	if a.Title.Url != b.Title.Url {
+		fmt.Println("Title.Url is different")
+		fmt.Println(a.Title.Url)
+		fmt.Println(b.Title.Url)
 	}
 
-	// 1. check the "Please show you're not a robot" page. See #61
-	// 2. check the "We're sorry..."
-	if s := doc.Find("h1").First().Text(); strings.Contains(s, "robot") || strings.Contains(s, "sorry") {
-		log.WithFields(log.Fields{"h1":s, "doc.Url": doc.Url}).Error("Robot check occurs")
-		return nil, errors.New("Robot check occurs")
+	if a.Year != b.Year {
+		fmt.Println("Year is different")
+		fmt.Println(a.Year)
+		fmt.Println(b.Year)
 	}
-
-	// check the "To continue, please type the characters below:". See #55
-	if strings.Contains(doc.Url.String(), "sorry") {
-		log.WithFields(log.Fields{"doc.Url": doc.Url}).Error("Request is rejected from Google")
-		return nil, errors.New("Request is rejected from Google")
+	if a.ClusterId != b.ClusterId {
+		fmt.Println("ClusterId is different")
+		fmt.Println(a.ClusterId)
+		fmt.Println(b.ClusterId)
 	}
-
-	return doc, nil
-}
-
-func parseYear(s string) string {
-	re, _ := regexp.Compile("\\d{4}")
-	return strings.TrimSpace(string(re.Find([]byte(s))))
-}
-
-func parseClusterId(url string) string {
-	url = url[15:]
-	ix := strings.Index(url, "&")
-	url = url[:ix]
-	return strings.TrimSpace(url)
-}
-
-func parseNumberOfCitations(s string) string {
-	return strings.TrimSpace(s[8:])
-}
-
-func parseNumberOfVersions(s string) string {
-	return strings.TrimSpace(s[strings.Index(s, " "):strings.LastIndex(s, " ")])
-}
-
-func parseInfoId(url string) string {
-	url = url[19:]
-	ix := strings.Index(url, ":")
-	url = url[:ix]
-	return strings.TrimSpace(url)
-}
-
-// e.g., "[PDF] from arxiv.orgarxiv.org [PDF]"", => "PDFSource": "arxiv.org"
-func parsePDFSource(s string) string { // TODO: fix
-	prefix := "[PDF] from "
-	suffix := " [PDF]"
-	if strings.HasPrefix(s, prefix) && strings.HasSuffix(s, suffix) {
-		s = strings.TrimSpace(s[len(prefix):len(s) - len(suffix)])
-		return s[:len(s) / 2]
+	if a.NumCite != b.NumCite {
+		fmt.Println("NumCite is different")
+		fmt.Println(a.NumCite)
+		fmt.Println(b.NumCite)
 	}
-	return ""
-}
-
-func startAndEndWithDoubleQuotation(s string) bool {
-	if strings.HasPrefix(s, "\"") && strings.HasSuffix(s, "\"") {
-		return true
-	} else {
-		return false
+	if a.NumVer != b.NumVer {
+		fmt.Println("NumVer is different")
+		fmt.Println(a.NumVer)
+		fmt.Println(b.NumVer)
 	}
-}
-
-func trimParameter(url string, trimming string) string {
-	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9_-]*`, trimming))
-	return rep.ReplaceAllString(url, "")
+	if a.InfoId != b.InfoId {
+		fmt.Println("InfoId is different")
+		fmt.Println(a.InfoId)
+		fmt.Println(b.InfoId)
+	}
+	if a.Link.Name != b.Link.Name {
+		fmt.Println("Link.Name is different")
+		fmt.Println(a.Link.Name)
+		fmt.Println(b.Link.Name)
+	}
+	if a.Link.Url != b.Link.Url {
+		fmt.Println("Link.Url is different")
+		fmt.Println(a.Link.Url)
+		fmt.Println(b.Link.Url)
+	}
+	if a.Link.Format != b.Link.Format {
+		fmt.Println("Title.Format is different")
+		fmt.Println(a.Link.Format)
+		fmt.Println(b.Link.Format)
+	}
 }
