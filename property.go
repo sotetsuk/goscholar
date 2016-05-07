@@ -16,4 +16,5 @@ const (
 	ARTICLE_HEADER_SELECTOR  = ".gs_a"
 	ARTICLE_FOOTER_SELECTOR  = ".gs_fl"
 	ARTICLE_SIDEBAR_SELECTOR = ".gs_md_wp > a"
+	SIDEBAR_TEXT_SELECTOR = ".gs_ggsS"
 )

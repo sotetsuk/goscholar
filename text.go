@@ -3,13 +3,17 @@ package goscholar
 import (
 	"regexp"
 	"strings"
-	"fmt"
 )
 
 func parseYearText(s string) (year string) {
-	re, _ := regexp.Compile("\\d{4}")
+	re, _ := regexp.Compile("\\s\\d{4}\\s")
+	year = strings.TrimSpace(string(re.Find([]byte(s))))
+	if year == "" {
+		re, _ = regexp.Compile("\\s\\d{4}")
+		year = strings.TrimSpace(string(re.Find([]byte(s))))
+	}
 
-	return strings.TrimSpace(string(re.Find([]byte(s))))
+	return year
 
 }
 
@@ -56,9 +60,4 @@ func enclosedInDoubleQuotation(s string) bool {
 	} else {
 		return false
 	}
-}
-
-func trimParameter(url string, param string) string {
-	rep := regexp.MustCompile(fmt.Sprintf(`&%v=[A-Za-z0-9_-]*`, param))
-	return rep.ReplaceAllString(url, "")
 }
