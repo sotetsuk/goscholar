@@ -36,7 +36,7 @@ func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 	a.Link = parseSideBar(s)
 
 	if !a.isValid() {
-		return nil, errors.New(fmt.Sprintf("%v is not valid article", a.Title.Name))
+		return nil, errors.New(fmt.Sprintf("\"%v\" is not a valid article", a.Title.Name))
 	}
 
 	return a, nil
