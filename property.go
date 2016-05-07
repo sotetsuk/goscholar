@@ -11,6 +11,7 @@ const (
 
 // selector
 const (
+	WHOLE_ARTICLE_SELECTOR = ".gs_r"
 	ARTICLE_TITLE_SELECTOR   = "h3.gs_rt > a"
 	ARTICLE_HEADER_SELECTOR  = ".gs_a"
 	ARTICLE_FOOTER_SELECTOR  = ".gs_fl"
