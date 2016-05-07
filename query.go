@@ -21,14 +21,14 @@ type Query struct {
 func (q *Query) SearchUrl() (url string) {
 	k := q.keywords
 	if q.author != "" {
-		if checkDoubleQuotation(q.author) {
+		if enclosedInDoubleQuotation(q.author) {
 			k += "+author:" + q.author
 		} else {
 			k += "+author:\"" + q.author + "\""
 		}
 	}
 	if q.title != "" {
-		if checkDoubleQuotation(q.title) {
+		if enclosedInDoubleQuotation(q.title) {
 			k += q.title
 		} else {
 			k += "+\"" + q.title + "\""
