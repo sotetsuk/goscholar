@@ -2,105 +2,67 @@ package goscholar
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"strings"
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
-	"regexp"
+	"strings"
+	"strconv"
 )
 
-const (
-	ARTICLE_TITLE_SELECTOR   = "h3.gs_rt > a"
-	ARTICLE_HEADER_SELECTOR  = ".gs_a"
-	ARTICLE_FOOTER_SELECTOR  = ".gs_fl"
-	ARTICLE_SIDEBAR_SELECTOR = ".gs_md_wp > a"
-)
-
+// Article stores the parsed results from Google Scholar.
 type Article struct {
-	Title             string
+	Title             *Title
 	Year              string
-	URL               string
 	ClusterId         string
-	NumberOfCitations string
-	NumberOfVersions  string
+	NumCite           string
+	NumVer            string
 	InfoId            string
-	PDFLink           string
-	PDFSource         string
+	Link              *Link
 }
 
-func NewArticle() *Article {
-	a := Article{}
-	return &a
+// Title is an attribute of Article.
+type Title struct {
+	Name string
+	Url string
 }
 
-func (a *Article) Parse(s *goquery.Selection) {
-	a.parseTitle(s)
-	a.parseHeader(s)
-	a.parseFooter(s)
-	a.parseSideBar(s)
+// Link is an attribute of Article
+type Link struct {
+	Name string
+	Url  string
+	Format string
 }
 
-func (a *Article) parseTitle(s *goquery.Selection) {
-	h3Title := s.Find(ARTICLE_TITLE_SELECTOR)
-	url, exists := h3Title.Attr("href")
+// NewArticle creates an Article in which all entry is blank.
+func newArticle() *Article {
+	a := &Article{}
+	title := &Title{}
+	link := &Link{}
 
-	if exists {
-		a.URL = url
-		a.Title = h3Title.Text()
-	} else {
-		title := s.Find("h3").Text()
-		rep, _ := regexp.Compile("\\[[a-zA-Z0-9]*\\]\\[[a-zA-Z0-9]*\\]\\s")
-		a.Title = rep.ReplaceAllString(title, "")
-	}
+	a.Title = title
+	a.Link = link
+
+	return a
 }
 
-func (a *Article) parseHeader(s *goquery.Selection) {
-	a.Year = parseYear(s.Find(ARTICLE_HEADER_SELECTOR).Text())
-}
-
-func (a *Article) parseFooter(s *goquery.Selection) {
-	divFooter := s.Find(ARTICLE_FOOTER_SELECTOR)
-	parseFooter := func(i int, s *goquery.Selection) {
-
-		href, _ := s.Attr("href")
-		text := s.Text()
-
-		if strings.HasPrefix(href, "/scholar?cites") {
-			a.ClusterId = parseClusterId(href) // TODO: both
-			a.NumberOfCitations = parseNumberOfCitations(text)
-		}
-		if strings.HasPrefix(href, "/scholar?cluster") {
-			a.NumberOfVersions = parseNumberOfVersions(text) // TODO: fix
-		}
-		if strings.HasPrefix(href, "/scholar?q=related") {
-			a.InfoId = parseInfoId(href)
-		}
-
-	}
-	divFooter.Find("a").Each(parseFooter)
-}
-
-func (a *Article) parseSideBar(s *goquery.Selection) {
-	sideBarA := s.Find(ARTICLE_SIDEBAR_SELECTOR)
-	a.PDFLink, _ = sideBarA.Attr("href")
-	a.PDFSource = parsePDFSource(sideBarA.Text())
-}
-
+// String provides a pretty print.
 func (a *Article) String() string {
-	title := fmt.Sprintf("title: %v\n", a.Title)
-	year := fmt.Sprintf("year: %v\n", a.Year)
-	url := fmt.Sprintf("url: %v\n", a.URL)
-	cluster_id := fmt.Sprintf("cluster_id: %v\n", a.ClusterId)
-	num_citations := fmt.Sprintf("# of citations: %v\n", a.NumberOfCitations)
-	num_versions := fmt.Sprintf("$ of versions: %v\n", a.NumberOfVersions)
-	info_id := fmt.Sprintf("info id: %v\n", a.InfoId)
-	pdf_link := fmt.Sprintf("pdf link: %v\n", a.PDFLink)
-	pdf_source := fmt.Sprintf("pdfSource: %v", a.PDFSource)
-	ret := title + year + url + cluster_id + num_citations + num_versions + info_id + pdf_link + pdf_source
+	ret := "[Title]\n"
+	ret += fmt.Sprintf("  Name: %v\n", a.Title.Name)
+	ret += fmt.Sprintf("  Url: %v\n", a.Title.Url)
+	ret += fmt.Sprintf("[Year]\n  %v\n", a.Year)
+	ret += fmt.Sprintf("[ClusterId]\n  %v\n", a.ClusterId)
+	ret += fmt.Sprintf("[NumCite]\n  %v\n", a.NumCite)
+	ret += fmt.Sprintf("[NumVer]\n  %v\n", a.NumVer)
+	ret += fmt.Sprintf("[InfoId]\n  %v\n", a.InfoId)
+	ret += "[Link]\n"
+	ret += fmt.Sprintf("  Name: %v\n", a.Link.Name)
+	ret += fmt.Sprintf("  Url: %v\n", a.Link.Url)
+	ret += fmt.Sprintf("  Format: %v", a.Link.Format)
 
 	return ret
 }
 
+// Json provides JSON formatted Article.
 func (a *Article) Json() string {
 	bytes, err := json.Marshal(a)
 	if err != nil {
@@ -109,78 +71,23 @@ func (a *Article) Json() string {
 	return string(bytes)
 }
 
-func (a *Article) isValid() bool {
-	// Avlid author-contamination. See #29 for details.
-	title_validation := strings.HasPrefix(a.Title, "User profiles for")
-	url_validation := strings.HasPrefix(a.URL, "/citations?view_op=search_authors")
+// isValid checks the Article whose attributes have wrong values
+func (a *Article) isValid() bool { // TODO: fix (return error w/ message)
+	// avoid author-contamination. See #29 for details.
+	title_validation := strings.HasPrefix(a.Title.Name, "User profiles for")
+	url_validation := strings.HasPrefix(a.Title.Url, "/citations?view_op=search_authors")
 	if title_validation && url_validation {
 		return false
 	}
 
+	// detect wrong year
+	yearInt, err := strconv.Atoi(a.Year)
+	if err != nil {
+		return false
+	}
+	if !(1800 <= yearInt && yearInt <= 2100) {
+		return false
+	}
+
 	return true
-}
-
-func (a *Article) same (b *Article) bool {
-	title := a.Title == b.Title
-	year := a.Year == b.Year
-	url := a.hasSameURL(b)
-	cluster_id := a.ClusterId == b.ClusterId
-	number_of_citations := a.NumberOfCitations == b.NumberOfCitations // TODO: fix
-	number_of_versions := a.NumberOfVersions == b.NumberOfVersions // TODO: fix
-	info_id := a.InfoId == b.InfoId
-	pdf_link := a.PDFLink == b.PDFLink
-	pdf_source := a.PDFSource == b.PDFSource
-
-	return title && year && url && cluster_id && number_of_citations && number_of_versions && info_id && pdf_link && pdf_source
-}
-
-func (a *Article) showDifference(b *Article) {
-	if a.Title != b.Title {
-		fmt.Println(a.Title)
-		fmt.Println(b.Title)
-	}
-	if a.Year != b.Year {
-		fmt.Println(a.Year)
-		fmt.Println(b.Year)
-	}
-	if !a.hasSameURL(b) {
-		if strings.HasPrefix(a.URL, "https://books.google.co.jp/") {
-			trimParameter(trimParameter(a.URL, "sig"), "ots")
-			trimParameter(trimParameter(b.URL, "sig"), "ots")
-		} else {
-			fmt.Println(a.URL)
-			fmt.Println(b.URL)
-		}
-	}
-	if a.ClusterId != b.ClusterId {
-		fmt.Println(a.ClusterId)
-		fmt.Println(b.ClusterId)
-	}
-	if a.NumberOfCitations != b.NumberOfCitations { // TODO: fix
-		fmt.Println(a.NumberOfCitations)
-		fmt.Println(b.NumberOfCitations)
-	}
-	if a.NumberOfVersions != b.NumberOfVersions { // TODO: fix
-		fmt.Println(a.NumberOfVersions)
-		fmt.Println(b.NumberOfVersions)
-	}
-	if a.InfoId != b.InfoId {
-		fmt.Println(a.InfoId)
-		fmt.Println(b.InfoId)
-	}
-	if a.PDFLink != b.PDFLink {
-		fmt.Println(a.PDFLink)
-		fmt.Println(b.PDFLink)
-	}
-	if a.PDFSource != b.PDFSource {
-		fmt.Println(a.PDFSource)
-		fmt.Println(b.PDFSource)
-	}
-}
-
-func (a *Article) hasSameURL(b *Article) bool {
-	if strings.HasPrefix(a.URL, "https://books.google.co.jp/") {
-		return trimParameter(trimParameter(a.URL, "sig"), "ots") == trimParameter(trimParameter(b.URL, "sig"), "ots")
-	}
-	return a.URL == b.URL
 }

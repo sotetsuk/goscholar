@@ -1,71 +1,64 @@
 package goscholar
 
 import (
-	"fmt"
 	"strings"
+	"fmt"
 )
 
-const (
-	SCHOLAR_URL = "https://scholar.google.co.jp/"
-)
+// Query issue an appropriate URL to which Fetch sends a request.
+type Query struct {
+	Keywords string
+	Author string
+	Title string
+	ClusterId string
+	InfoId string
+	After string
+	Before string
+	Num string
+	Start string
+}
 
-var (
-	SEARCH_URL     = SCHOLAR_URL + "scholar?hl=en&q=%v&as_ylo=%v&as_yhi=%v&num=%v&start=%v"
-	FIND_URL       = SCHOLAR_URL + "scholar?hl=en&cluster=%v&num=1"
-	CITE_URL       = SCHOLAR_URL + "scholar?hl=en&cites=%v&as_ylo=%v&as_yhi=%v&num=%v&start=%v"
-	CITE_POPUP_URL = SCHOLAR_URL + "scholar?q=info:%s:scholar.google.com/&output=cite&scirp=0&hl=en"
-)
-
-func SearchQuery(arguments map[string]interface{}) (string, error) {
-	// TODO: validate inputs
-	author, title, query, _, after, before, num, start := parseAndInitializeArguments(arguments)
-
-	searchQuery := func(query, author, title, after, before, num, start string) (string, error) {
-		q := query
-		if author != "" {
-			if startAndEndWithDoubleQuotation(author) {
-				q += "+author:" + author
-			} else {
-				q += "+author:\"" + author + "\""
-			}
+// SearchUrl issues URL whose search query is composed of keywords, author and title.
+// SearchUrl uses Keywords, Author, Title, After, Before, Num and Start Attributes.
+// For example:
+//   https://scholar.google.co.jp/scholar?hl=en&q=deep+learning+author:"y+bengio"&as_ylo=2015&as_yhi=&num=100&start=20
+func (q *Query) SearchUrl() (url string) {
+	k := q.Keywords
+	if q.Author != "" {
+		if enclosedInDoubleQuotation(q.Author) {
+			k += "+author:" + q.Author
+		} else {
+			k += "+author:\"" + q.Author + "\""
 		}
-		if title != "" {
-			if startAndEndWithDoubleQuotation(title) {
-				q += title
-			} else {
-				q += "+\"" + title + "\""
-			}
+	}
+	if q.Title != "" {
+		if enclosedInDoubleQuotation(q.Title) {
+			k += q.Title
+		} else {
+			k += "+\"" + q.Title + "\""
 		}
-		q = strings.Replace(q, " ", "+", -1)
-
-		return fmt.Sprintf(SEARCH_URL, q, after, before, num, start), nil
 	}
-	return searchQuery(query, author, title, after, before, num, start)
+	k = strings.Replace(k, " ", "+", -1)
+
+	return fmt.Sprintf(search_url, k, q.After, q.Before, q.Num, q.Start)
 }
 
-func FindQuery(arguments map[string]interface{}) (string, error) {
-	// TODO: validate inputs
-	_, _, _, cluster_id, _, _, _, _ := parseAndInitializeArguments(arguments)
-
-	findQuery := func(cluster_id string) (string, error) {
-		return fmt.Sprintf(FIND_URL, cluster_id), nil
-	}
-
-	return findQuery(cluster_id)
+// FindUrl uses ClusterId which identify the desired article and spits out URL like:
+//   https://scholar.google.co.jp/scholar?hl=en&cluster=5362332738201102290&num=1
+// FindUrl depends only on ClusterId
+func (q *Query) FindUrl() (url string) {
+	return fmt.Sprintf(find_url, q.ClusterId)
 }
 
-func CiteQuery(arguments map[string]interface{}) (string, error) {
-	// TODO: validate inputs
-	_, _, _, cluster_id, after, before, num, start := parseAndInitializeArguments(arguments)
-
-	citeQuery := func(cluster_id, after, before, num, start string) (string, error) {
-		return fmt.Sprintf(CITE_URL, cluster_id, after, before, num, start), nil
-	}
-
-	return citeQuery(cluster_id, after, before, num, start)
+// CiteUrl uses ClusterId and issues the URL whose results include the articles citing the article of the ClusterId.
+// This depends on ClusterId, After, Before, Num and Start. For example:
+//   https://scholar.google.co.jp/scholar?hl=en&cites=5362332738201102290&as_ylo=2012&as_yhi=&num=40&start=20
+func (q *Query) CiteUrl() (url string) {
+	return fmt.Sprintf(cite_url, q.ClusterId, q.After, q.Before, q.Num, q.Start)
 }
 
-func CitePopUpQuery(info string) (string, error) {
-	// TODO: validate inputs
-	return fmt.Sprintf(CITE_POPUP_URL, info), nil
+// CitePopUpQueryUrl issues a URL used for getting BibTeX information. This only uses the InfoId. For example:
+//   https://scholar.google.co.jp/scholar?q=info:XOJff8gPiHAJ:scholar.google.com/&output=cite&scirp=0&hl=en
+func (q *Query) CitePopUpQueryUrl() (url string) {
+	return fmt.Sprintf(cite_popup_url, q.InfoId)
 }
