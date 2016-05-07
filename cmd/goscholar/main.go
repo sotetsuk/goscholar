@@ -58,7 +58,7 @@ Others:
 		url = q.CiteUrl()
 	}
 
-	// fetch document from the request sent to the URL
+	// fetch document from sending the request to the URL
 	doc, err := goscholar.Fetch(url)
 	if err != nil {
 		log.Error(err)
