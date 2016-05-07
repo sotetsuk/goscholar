@@ -7,7 +7,7 @@ import (
 	"errors"
 )
 
-func Fetech(url string) (doc *goquery.Document, err error) {
+func Fetch(url string) (doc *goquery.Document, err error) {
 	log.WithFields(log.Fields{"url": url}).Info("Fetch sends request")
 
 	doc, err = goquery.NewDocument(url)

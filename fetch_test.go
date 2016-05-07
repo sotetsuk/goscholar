@@ -7,7 +7,7 @@ import (
 func TestFetch(t *testing.T) {
 	url := "https://scholar.google.co.jp/scholar?hl=en&cluster=5362332738201102290&num=1"
 
-	doc, err := Fetech(url)
+	doc, err := Fetch(url)
 	if err != nil {
 		t.Skip(err)
 	}
