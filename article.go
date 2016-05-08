@@ -10,26 +10,26 @@ import (
 
 // Article stores the parsed results from Google Scholar.
 type Article struct {
-	Title             *Title
-	Year              string
-	ClusterId         string
-	NumCite           string
-	NumVer            string
-	InfoId            string
-	Link              *Link
+	Title             *Title `json:"title"`
+	Year              string `json:"year"`
+	ClusterId         string `json:"cluster_id"`
+	NumCite           string `json:"num_cite"`
+	NumVer            string `json:"num_ver"`
+	InfoId            string `json:"info_id"`
+	Link              *Link `json:"link"`
 }
 
 // Title is an attribute of Article.
 type Title struct {
-	Name string
-	Url string
+	Name string `json:"name"`
+	Url string `json:"url"`
 }
 
 // Link is an attribute of Article
 type Link struct {
-	Name string
-	Url  string
-	Format string
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Format string `json:"format"`
 }
 
 // NewArticle creates an Article in which all entry is blank.
