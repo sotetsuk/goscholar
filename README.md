@@ -36,21 +36,21 @@ $ goscholar -h
 
 ```go
 // create Query and generate URL
-q := Query{Keywords:"deep learning", Author:"y bengio"} 
-url = q.SearchUrl()
+q := Query{Keywords:"nature 2015", Author:"y bengio", Title:"Deep learning"}
+url := q.SearchUrl()
 
 // fetch document sending the request to the URL
-doc, err := goscholar.Fetch(url)
+doc, err := Fetch(url)
 if err != nil {
-    log.Error(err)
+	log.Error(err)
 	return
 }
 
 // parse articles
-ch := make(chan *goscholar.Article, 10)
-go goscholar.ParseDocument(ch, doc)
-
+ch := make(chan *Article, 10)
+go ParseDocument(ch, doc)
 for a := range ch {
+	fmt.Println("---")
 	fmt.Println(a)
 }
 ```
