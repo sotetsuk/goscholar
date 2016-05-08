@@ -11,7 +11,7 @@ import (
 const articles_buffer = 100000
 
 func main() {
-	version := "go-scholar 0.1.0"
+	version := "go-scholar 0.1.1"
 	usage := `go-scholar: Google Scholar crawler and scraper written in Go
 
 Usage:
