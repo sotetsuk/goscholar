@@ -91,7 +91,7 @@ func ExampleString() {
 func ExampleJson() {
 	fmt.Println(article.Json())
 	// Output:
-	// {"Title":{"Name":"Deep learning via Hessian-free optimization","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},"Year":"2010","ClusterId":"15502119379559163003","NumCite":"260","NumVer":"9","InfoId":"e6RSJHGXItcJ","Link":{"Name":"wustl.edu","Url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf","Format":"PDF"}}
+	// {"title":{"name":"Deep learning via Hessian-free optimization","url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"},"year":"2010","cluster_id":"15502119379559163003","num_cite":"260","num_ver":"9","info_id":"e6RSJHGXItcJ","link":{"name":"wustl.edu","url":"http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf","format":"PDF"}}
 }
 
 func TestIsValid(t *testing.T) {

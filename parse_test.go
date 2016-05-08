@@ -75,38 +75,24 @@ func checkWithFirst(doc *goquery.Document, aExpected *Article) (err error) {
 }
 
 func Example() {
-	ch := make(chan *Article, 10)
-
+	// create Query and generate URL
 	q := Query{Keywords:"nature 2015", Author:"y bengio", Title:"Deep learning"}
 	url := q.SearchUrl()
 
+	// fetch document sending the request to the URL
 	doc, err := Fetch(url)
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
+	// parse articles
+	ch := make(chan *Article, 10)
 	go ParseDocument(ch, doc)
-	a := <- ch
-	fmt.Println(a)
-	// Output:
-	/*[Title]
-  Name: Deep learning
-  Url: http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html
-[Year]
-  2015
-[ClusterId]
-  5362332738201102290
-[NumCite]
-  390
-[NumVer]
-  7
-[InfoId]
-  0qfs6zbVakoJ
-[Link]
-  Name: psu.edu
-  Url: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf
-  Format: PDF*/
+	for a := range ch {
+		fmt.Println("---")
+		fmt.Println(a)
+	}
 }
 
 func TestParseSelection(t *testing.T) {
