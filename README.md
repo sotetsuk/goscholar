@@ -63,20 +63,20 @@ for a := range ch {
 $ goscholar search --keywords "deep learning nature" --author "y bengio" --after 2015 --num 1 | python -mjson.tool
 [
     {
-        "ClusterId": "5362332738201102290",
-        "InfoId": "0qfs6zbVakoJ",
-        "Link": {
-            "Format": "PDF",
-            "Name": "psu.edu",
-            "Url": "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf"
+        "cluster_id": "5362332738201102290",
+        "info_id_": "0qfs6zbVakoJ",
+        "link": {
+            "format": "PDF",
+            "name": "psu.edu",
+            "url": "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf"
         },
-        "NumCite": "390",
-        "NumVer": "7",
-        "Title": {
-            "Name": "Deep learning",
-            "Url": "http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html"
+        "num_cite_": "390",
+        "num_ver": "7",
+        "title": {
+            "name": "Deep learning",
+            "url": "http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html"
         },
-        "Year": "2015"
+        "year": "2015"
     }
 ] 
 ```
@@ -85,20 +85,20 @@ $ goscholar search --keywords "deep learning nature" --author "y bengio" --after
 $ goscholar find 15502119379559163003 | python  -mjson.tool
 [
     {
-        "ClusterId": "15502119379559163003",
-        "InfoId": "e6RSJHGXItcJ",
-        "Link": {
-            "Format": "PDF",
-            "Name": "wustl.edu",
-            "Url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
+        "cluster_id": "15502119379559163003",
+        "info_id": "e6RSJHGXItcJ",
+        "link": {
+            "format": "PDF",
+            "name": "wustl.edu",
+            "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
         },
-        "NumCite": "260",
-        "NumVer": "",
-        "Title": {
-            "Name": "Deep learning via Hessian-free optimization",
-            "Url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
+        "num_cite": "260",
+        "num_ver": "",
+        "title": {
+            "name": "Deep learning via Hessian-free optimization",
+            "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
         },
-        "Year": "2010"
+        "year": "2010"
     }
 ] 
 ```
@@ -107,20 +107,20 @@ $ goscholar find 15502119379559163003 | python  -mjson.tool
 $ goscholar cite 15502119379559163003 --num 1 | python -mjson.tool
 [
     {
-        "ClusterId": "3674494786452480182",
-        "InfoId": "tmCGO4pt_jIJ",
-        "Link": {
-            "Format": "PDF",
-            "Name": "toronto.edu",
-            "Url": "http://www.cs.toronto.edu/~asamir/papers/SPM_DNN_12.pdf"
+        "cluster_id": "3674494786452480182",
+        "info_id": "tmCGO4pt_jIJ",
+        "link": {
+            "format": "PDF",
+            "name": "toronto.edu",
+            "url": "http://www.cs.toronto.edu/~asamir/papers/SPM_DNN_12.pdf"
         },
-        "NumCite": "1452",
-        "NumVer": "27",
-        "Title": {
-            "Name": "Deep neural networks for acoustic modeling in speech recognition: The shared views of four research groups",
-            "Url": "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6296526"
+        "num_cite": "1452",
+        "num_ver": "27",
+        "title": {
+            "name": "Deep neural networks for acoustic modeling in speech recognition: The shared views of four research groups",
+            "url": "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6296526"
         },
-        "Year": "2012"
+        "year": "2012"
     }
 ]
 ```
