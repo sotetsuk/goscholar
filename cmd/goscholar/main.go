@@ -11,16 +11,16 @@ import (
 const articles_buffer = 100000
 
 func main() {
-	version := "go-scholar 0.1.2"
-	usage := `go-scholar: Google Scholar crawler and scraper written in Go
+	version := "goscholar 0.1.2"
+	usage := `goscholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
+  goscholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
                     [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  go-scholar find <cluster-id>
-  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  go-scholar -h | --help
-  go-scholar --version
+  goscholar find <cluster-id>
+  goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+  goscholar -h | --help
+  goscholar --version
 
 Query-options:
   <cluster-id>
