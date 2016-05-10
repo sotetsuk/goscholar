@@ -1,10 +1,10 @@
 package goscholar
 
 import (
+	"errors"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
 	"strings"
-	"errors"
 )
 
 // Fetch gets a Document from a given URL. For usage, see the example of Overview.
@@ -21,7 +21,7 @@ func Fetch(url string) (doc *goquery.Document, err error) {
 	// 1. check the "Please show you're not a robot" page. See #61
 	// 2. check the "We're sorry..."
 	if s := doc.Find("h1").First().Text(); strings.Contains(s, "robot") || strings.Contains(s, "sorry") {
-		log.WithFields(log.Fields{"h1":s, "doc.Url": doc.Url}).Error("Robot check occurs")
+		log.WithFields(log.Fields{"h1": s, "doc.Url": doc.Url}).Error("Robot check occurs")
 		return nil, errors.New("Failed to fetch Document")
 	}
 

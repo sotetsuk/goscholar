@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	log "github.com/Sirupsen/logrus"
 	"strconv"
 	"testing"
 	"time"
-	log "github.com/Sirupsen/logrus"
 )
 
 var url1, url2 string
@@ -76,7 +76,7 @@ func checkWithFirst(doc *goquery.Document, aExpected *Article) (err error) {
 
 func Example() {
 	// create Query and generate URL
-	q := Query{Keywords:"nature 2015", Author:"y bengio", Title:"Deep learning"}
+	q := Query{Keywords: "nature 2015", Author: "y bengio", Title: "Deep learning"}
 	url := q.SearchUrl()
 
 	// fetch document sending the request to the URL

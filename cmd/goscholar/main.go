@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/docopt/docopt-go"
-	log "github.com/Sirupsen/logrus"
-	"github.com/sotetsuk/goscholar"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
+	"github.com/docopt/docopt-go"
+	"github.com/sotetsuk/goscholar"
 	"os"
 )
 
@@ -115,14 +115,14 @@ func parseArgs(args map[string]interface{}) (q *goscholar.Query) {
 	}
 
 	q = &goscholar.Query{
-		Keywords:keywords,
-		Author:author,
-		Title:title,
-		ClusterId:clusterId,
-		After:after,
-		Before:before,
-		Num:num,
-		Start:start,
+		Keywords:  keywords,
+		Author:    author,
+		Title:     title,
+		ClusterId: clusterId,
+		After:     after,
+		Before:    before,
+		Num:       num,
+		Start:     start,
 	}
 
 	return q
