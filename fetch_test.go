@@ -16,6 +16,6 @@ func TestFetch(t *testing.T) {
 	actual := doc.Find(whole_article_selector).First().Find(article_h3_selector).Text()
 
 	if actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }

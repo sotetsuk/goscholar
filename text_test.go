@@ -10,14 +10,14 @@ func TestParseYearText(t *testing.T) {
 	expected := "2015"
 
 	if actual := parseYearText(s); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 
 	// test case 1
 	s = "Y Bengio, AC Courville, P Vincent - CoRR, abs/1206.5538, 2012"
 	expected = "2012"
 	if actual := parseYearText(s); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }
 
@@ -26,7 +26,7 @@ func TestParseClusterIdText(t *testing.T) {
 	expected := "5362332738201102290"
 
 	if actual := parseClusterIdText(url); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }
 
@@ -35,7 +35,7 @@ func TestParseNumCiteText(t *testing.T) {
 	expected := "390"
 
 	if actual := parseNumCiteText(s); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }
 
@@ -44,7 +44,7 @@ func TestParseNumVerText(t *testing.T) {
 	expected := "7"
 
 	if actual := parseNumVerText(s); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }
 
@@ -53,7 +53,7 @@ func TestParseInfoIdText(t *testing.T) {
 	expected := "0qfs6zbVakoJ"
 
 	if actual := parseInfoIdText(url); actual != expected {
-		t.Error(testErr{expected:expected, actual:actual})
+		t.Error(testErr{expected: expected, actual: actual})
 	}
 }
 
@@ -65,11 +65,11 @@ func TestParseLinkText(t *testing.T) {
 	actualName, actualFormat := parseLinkText(s)
 
 	if actualName != expectedName {
-		t.Error(testErr{expected:expectedName, actual:actualName})
+		t.Error(testErr{expected: expectedName, actual: actualName})
 	}
 
 	if actualFormat != expectedFormat {
-		t.Error(testErr{expected:expectedFormat, actual:actualFormat})
+		t.Error(testErr{expected: expectedFormat, actual: actualFormat})
 	}
 }
 

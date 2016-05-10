@@ -1,12 +1,12 @@
 package goscholar
 
 import (
+	"errors"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
 	"regexp"
 	"strings"
-	"errors"
-	"fmt"
 )
 
 // ParseDocument sends the pointers of parsed Articles to the given channel.
@@ -43,7 +43,7 @@ func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 }
 
 // parseH3 an article title and its link
-func parseH3(s *goquery.Selection) (title *Title){
+func parseH3(s *goquery.Selection) (title *Title) {
 	title = &Title{}
 	h3 := s.Find(article_h3_selector)
 	url, exists := h3.Attr("href")

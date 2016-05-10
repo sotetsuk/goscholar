@@ -6,7 +6,7 @@ import (
 
 type testErr struct {
 	expected string
-	actual string
+	actual   string
 }
 
 func (e testErr) Error() string {
@@ -19,7 +19,7 @@ func same(a *Article, b *Article) (ok bool) {
 	year := a.Year == b.Year
 	cluster_id := a.ClusterId == b.ClusterId
 	numCite := a.NumCite == b.NumCite // TODO: fix; check by range
-	numVer := a.NumVer == b.NumVer // TODO: fix; check by range
+	numVer := a.NumVer == b.NumVer    // TODO: fix; check by range
 	info_id := a.InfoId == b.InfoId
 	linkName := a.Link.Name == b.Link.Name
 	linkUrl := a.Link.Url == b.Link.Url

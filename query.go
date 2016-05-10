@@ -1,21 +1,21 @@
 package goscholar
 
 import (
-	"strings"
 	"fmt"
+	"strings"
 )
 
 // Query issue an appropriate URL to which Fetch sends a request.
 type Query struct {
-	Keywords string
-	Author string
-	Title string
+	Keywords  string
+	Author    string
+	Title     string
 	ClusterId string
-	InfoId string
-	After string
-	Before string
-	Num string
-	Start string
+	InfoId    string
+	After     string
+	Before    string
+	Num       string
+	Start     string
 }
 
 // SearchUrl issues URL whose search query is composed of keywords, author and title.

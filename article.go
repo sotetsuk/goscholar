@@ -1,34 +1,34 @@
 package goscholar
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 // Article stores the parsed results from Google Scholar.
 type Article struct {
-	Title             *Title `json:"title"`
-	Year              string `json:"year"`
-	ClusterId         string `json:"cluster_id"`
-	NumCite           string `json:"num_cite"`
-	NumVer            string `json:"num_ver"`
-	InfoId            string `json:"info_id"`
-	Link              *Link `json:"link"`
+	Title     *Title `json:"title"`
+	Year      string `json:"year"`
+	ClusterId string `json:"cluster_id"`
+	NumCite   string `json:"num_cite"`
+	NumVer    string `json:"num_ver"`
+	InfoId    string `json:"info_id"`
+	Link      *Link  `json:"link"`
 }
 
 // Title is an attribute of Article.
 type Title struct {
 	Name string `json:"name"`
-	Url string `json:"url"`
+	Url  string `json:"url"`
 }
 
 // Link is an attribute of Article
 type Link struct {
-	Name string `json:"name"`
-	Url  string `json:"url"`
+	Name   string `json:"name"`
+	Url    string `json:"url"`
 	Format string `json:"format"`
 }
 
@@ -66,7 +66,7 @@ func (a *Article) String() string {
 func (a *Article) Json() string {
 	bytes, err := json.Marshal(a)
 	if err != nil {
-		log.WithFields(log.Fields{"a": a, "err":err}).Error("Json encoding failed")
+		log.WithFields(log.Fields{"a": a, "err": err}).Error("Json encoding failed")
 	}
 	return string(bytes)
 }
