@@ -69,23 +69,23 @@ func TestNewArticle(t *testing.T) {
 func ExampleString() {
 	fmt.Println(article)
 	// Output:
-	/*[Title]
-	  Name: Deep learning via Hessian-free optimization
-	  Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
-	[Year]
-	  2010
-	[ClusterId]
-	  15502119379559163003
-	[NumCite]
-	  260
-	[NumVer]
-	  9
-	[InfoId]
-	  e6RSJHGXItcJ
-	[Link]
-	  Name: wustl.edu
-	  Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
-	  Format: PDF*/
+	// [Title]
+	//   Name: Deep learning via Hessian-free optimization
+	//   Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
+	// [Year]
+	//   2010
+	// [ClusterId]
+	//   15502119379559163003
+	// [NumCite]
+	//   260
+	// [NumVer]
+	//   9
+	// [InfoId]
+	//   e6RSJHGXItcJ
+	// [Link]
+	//   Name: wustl.edu
+	//   Url: http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf
+	//   Format: PDF
 }
 
 func ExampleJson() {
