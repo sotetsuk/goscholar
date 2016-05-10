@@ -34,7 +34,7 @@ func init() {
 		},
 		Year:      "2009",
 		ClusterId: "5331804836605365413",
-		NumCite:   "2424",
+		NumCite:   "2429",
 		NumVer:    "58",
 		InfoId:    "pYyS8T9g_kkJ",
 		Link: &Link{
@@ -52,7 +52,7 @@ func init() {
 		},
 		Year:      "2012",
 		ClusterId: "1290425714414184502",
-		NumCite:   "140",
+		NumCite:   "139",
 		NumVer:    "",
 		InfoId:    "NuivrFmD6BEJ",
 		Link: &Link{

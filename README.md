@@ -29,6 +29,7 @@ $ goscholar -h
 - find by ```<cluster-id>```
 - search the articles citing ```<cluster-id>```
 - JSON output
+- recursive clawling is not implemented
 
 ## Go API
 
@@ -130,15 +131,15 @@ $ goscholar cite 15502119379559163003 --num 1 | python -mjson.tool
 ### Usage
 
 ```
-go-scholar: Google Scholar crawler and scraper written in Go
+goscholar: Google Scholar crawler and scraper written in Go
 
 Usage:
-  go-scholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
+  goscholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
                     [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  go-scholar find <cluster-id>
-  go-scholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  go-scholar -h | --help
-  go-scholar --version
+  goscholar find <cluster-id>
+  goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+  goscholar -h | --help
+  goscholar --version
 
 Query-options:
   <cluster-id>
