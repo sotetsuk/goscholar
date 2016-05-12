@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+export GOFMTPATH="./ cmd/goscholar"
+
+eval $(go env)
+
+## TODO: install dependencies with GoDeps
+
+if [ "--fmt" = "$1" ]; then
+    gofmt -s -w -l $GOFMTPATH
+fi
+
+go build
+go build -o goscholar cmd/goscholar/main.go
