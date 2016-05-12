@@ -21,6 +21,20 @@ $ go get github.com/sotetsuk/goscholar/cmd/goscholar
 $ goscholar -h
 ```
 
+### Build
+Also, you can use ```build``` command to  build command line tool from the source code.
+
+```
+$ git clone git@github.com:sotetsuk/goscholar.git
+$ goscholar/build
+```
+
+Options:
+
+```
+--fmt: apply go fmt to all files
+```
+
 ## Feature
 
 - API for Go 
