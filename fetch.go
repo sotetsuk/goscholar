@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
+	"net/http"
 	"strings"
 )
 
@@ -11,7 +12,24 @@ import (
 func Fetch(url string) (doc *goquery.Document, err error) {
 	log.WithFields(log.Fields{"url": url}).Info("Fetch sends request")
 
-	doc, err = goquery.NewDocument(url)
+	// set request
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.WithFields(log.Fields{"url": url, "err": err}).Error("Failed to generate new request")
+		return nil, err
+	}
+	req.Header.Set("User-Agent", USER_AGENT)
+
+	// send request and get response
+	client := http.DefaultClient
+	res, err := client.Do(req)
+	if err != nil {
+		log.WithFields(log.Fields{"url": url, "err": err}).Error("Failed to get response")
+		return nil, err
+	}
+
+	// generate new Document
+	doc, err = goquery.NewDocumentFromResponse(res)
 	log.WithFields(log.Fields{"doc.url": doc.Url}).Info("goquery.Document is generated")
 	if err != nil {
 		log.WithFields(log.Fields{"url": url, "err": err}).Error("Generating goquery.Documentation failed")

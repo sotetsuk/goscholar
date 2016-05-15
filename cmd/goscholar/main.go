@@ -16,9 +16,11 @@ func main() {
 
 Usage:
   goscholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
-                    [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  goscholar find <cluster-id>
+                   [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                   [--user-agent=<user-agent>]
+  goscholar find <cluster-id> [--user-agent=<user-agent>]
   goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                              [--user-agent=<user-agent>]
   goscholar -h | --help
   goscholar --version
 
@@ -108,6 +110,9 @@ func parseArgs(args map[string]interface{}) (q *goscholar.Query) {
 	}
 	if args["--start"] != nil {
 		start = args["--start"].(string)
+	}
+	if args["--user-agent"] != nil {
+		goscholar.USER_AGENT = args["--user-agent"].(string)
 	}
 
 	if num == "" {
