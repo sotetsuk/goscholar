@@ -1,0 +1,33 @@
+{
+	"ImportPath": "github.com/sotetsuk/goscholar",
+	"GoVersion": "go1.5",
+	"GodepVersion": "v67",
+	"Deps": [
+		{
+			"ImportPath": "github.com/PuerkitoBio/goquery",
+			"Comment": "v0.3.2-86-g2e29ea4",
+			"Rev": "2e29ea41f0d13f4a303c75553f4eeadddc7a4c56"
+		},
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.10.0-16-gcd7d1bb",
+			"Rev": "cd7d1bbe41066b6c1f19780f895901052150a575"
+		},
+		{
+			"ImportPath": "github.com/andybalholm/cascadia",
+			"Rev": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html",
+			"Rev": "4fd4a9fed55e5bdee4a89d6406c2eabe38b60300"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html/atom",
+			"Rev": "4fd4a9fed55e5bdee4a89d6406c2eabe38b60300"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "33267e036fd93fcd26ea95b7bdaf2d8306cb743c"
+		}
+	]
+}
