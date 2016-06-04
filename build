@@ -14,6 +14,7 @@ if ! [ -e $GOPATH/bin/godep ]; then
 fi
 
 $GOPATH/bin/godep restore
+go get github.com/docopt/docopt-go  # docopt-go is only used in CLI
 
 go build
 go build -o goscholar cmd/goscholar/main.go
