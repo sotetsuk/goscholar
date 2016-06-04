@@ -2,21 +2,29 @@ package goscholar
 
 import (
 	"encoding/json"
-	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"github.com/k0kubun/pp"
 	"strconv"
 	"strings"
 )
 
 // Article stores the parsed results from Google Scholar.
 type Article struct {
-	Title     *Title `json:"title"`
-	Year      string `json:"year"`
-	ClusterId string `json:"cluster_id"`
-	NumCite   string `json:"num_cite"`
-	NumVer    string `json:"num_ver"`
-	InfoId    string `json:"info_id"`
-	Link      *Link  `json:"link"`
+	Title     *Title   `json:"title"`
+	Year      string   `json:"year"`
+	ClusterId string   `json:"cluster_id"`
+	NumCite   string   `json:"num_cite"`
+	NumVer    string   `json:"num_ver"`
+	InfoId    string   `json:"info_id"`
+	Link      *Link    `json:"link"`
+	BibTeX    string   `json:"bibtex"`
+	Author    []string `json:"author"`
+	Journal   string   `json:"journal"`
+	Booktitle string   `json:"booktitle"`
+	Volume    string   `json:"volume"`
+	Number    string   `json:"number"`
+	Pages     string   `json:"pages"`
+	Publisher string   `json:"publisher"`
 }
 
 // Title is an attribute of Article.
@@ -46,20 +54,7 @@ func newArticle() *Article {
 
 // String provides a pretty print.
 func (a *Article) String() string {
-	ret := "[Title]\n"
-	ret += fmt.Sprintf("  Name: %v\n", a.Title.Name)
-	ret += fmt.Sprintf("  Url: %v\n", a.Title.Url)
-	ret += fmt.Sprintf("[Year]\n  %v\n", a.Year)
-	ret += fmt.Sprintf("[ClusterId]\n  %v\n", a.ClusterId)
-	ret += fmt.Sprintf("[NumCite]\n  %v\n", a.NumCite)
-	ret += fmt.Sprintf("[NumVer]\n  %v\n", a.NumVer)
-	ret += fmt.Sprintf("[InfoId]\n  %v\n", a.InfoId)
-	ret += "[Link]\n"
-	ret += fmt.Sprintf("  Name: %v\n", a.Link.Name)
-	ret += fmt.Sprintf("  Url: %v\n", a.Link.Url)
-	ret += fmt.Sprintf("  Format: %v", a.Link.Format)
-
-	return ret
+	return pp.Sprint(a)
 }
 
 // Json provides JSON formatted Article.

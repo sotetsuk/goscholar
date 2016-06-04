@@ -91,6 +91,6 @@ func TestGenerateBibTeXLink(t *testing.T) {
 	expected := "https://scholar.google.co.jp/scholar.bib?q=info:b2pGeL14LLMJ:scholar.google.com/&output=citation&hl=en&ct=citation"
 
 	if bibtexLink := generateBibTeXLink(infoId); expected != bibtexLink {
-		t.Error(testErr{expected:expected, actual:bibtexLink})
+		t.Error(testErr{expected: expected, actual: bibtexLink})
 	}
 }

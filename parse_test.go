@@ -27,6 +27,7 @@ func init() {
 	test_case2 := "./testdata/parse_test_case2.html"
 	doc2, err2 = loadDummyHtml(test_case2) // In actual case, use Fetch(url)
 
+	// TODO: Update test for bibtex information
 	// set a1Expected
 	a1Expected = &Article{
 		Title: &Title{
