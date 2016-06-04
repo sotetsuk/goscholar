@@ -4,15 +4,17 @@ export GOFMTPATH="./ cmd/goscholar"
 
 eval $(go env)
 
+if [ "--dev" = "$1" ]; then
+    gofmt -s -w -l $GOFMTPATH
+    $GOPATH/bin/godep save
+fi
+
 if ! [ -e $GOPATH/bin/godep ]; then
     go get github.com/tools/godep
 fi
 
 $GOPATH/bin/godep restore
-
-if [ "--fmt" = "$1" ]; then
-    gofmt -s -w -l $GOFMTPATH
-fi
+go get github.com/docopt/docopt-go  # docopt-go is only used in CLI
 
 go build
 go build -o goscholar cmd/goscholar/main.go

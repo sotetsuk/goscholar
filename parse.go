@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
+	"github.com/sotetsuk/gobibtex"
 	"regexp"
 	"strings"
+	"time"
 )
 
 // ParseDocument sends the pointers of parsed Articles to the given channel.
@@ -34,6 +36,43 @@ func ParseSelection(s *goquery.Selection) (a *Article, err error) {
 	a.Year = parseGreenLine(s)
 	a.ClusterId, a.NumCite, a.NumVer, a.InfoId = parseBottom(s)
 	a.Link = parseSideBar(s)
+
+	if a.InfoId != "" {
+		time.Sleep(1.0 * time.Second) // TODO: make 1.0 parameter
+		a.BibTeX, err = getBibTeX(generateBibTeXLink(a.InfoId))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if a.BibTeX != "" {
+		bibmap, err := gobibtex.Decode(a.BibTeX)
+		if err != nil {
+			return nil, err
+		}
+
+		if author, ok := bibmap["author"]; ok {
+			a.Author = author.([]string)
+		}
+		if journal, ok := bibmap["journal"]; ok {
+			a.Journal = journal.(string)
+		}
+		if booktitle, ok := bibmap["booktitle"]; ok {
+			a.Booktitle = booktitle.(string)
+		}
+		if volume, ok := bibmap["volume"]; ok {
+			a.Volume = volume.(string)
+		}
+		if number, ok := bibmap["number"]; ok {
+			a.Number = number.(string)
+		}
+		if pages, ok := bibmap["pages"]; ok {
+			a.Pages = pages.(string)
+		}
+		if publisher, ok := bibmap["publisher"]; ok {
+			a.Publisher = publisher.(string)
+		}
+	}
 
 	if !a.isValid() {
 		return nil, errors.New(fmt.Sprintf("\"%v\" is not a valid article", a.Title.Name))

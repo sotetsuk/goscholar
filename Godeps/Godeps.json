@@ -18,6 +18,24 @@
 			"Rev": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
 		},
 		{
+			"ImportPath": "github.com/k0kubun/pp",
+			"Comment": "v2.1.0-9-gf5dce6e",
+			"Rev": "f5dce6ed0ccf6c350f1679964ff6b61f3d6d2033"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Comment": "v0.0.5",
+			"Rev": "9056b7a9f2d1f2d96498d6d146acd1f9d5ed3d59"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "56b76bdf51f7708750eac80fa38b952bb9f32639"
+		},
+		{
+			"ImportPath": "github.com/sotetsuk/gobibtex",
+			"Rev": "4af0d4fe9c2db7c3d01bf4271a0a5006cb530fd6"
+		},
+		{
 			"ImportPath": "golang.org/x/net/html",
 			"Rev": "4fd4a9fed55e5bdee4a89d6406c2eabe38b60300"
 		},
