@@ -13,8 +13,18 @@ if ! [ -e $GOPATH/bin/godep ]; then
     go get github.com/tools/godep
 fi
 
+if ! [ -e $GOPAHT/bin/gox ]; then
+    go get github.com/mitchellh/gox
+fi
+
 $GOPATH/bin/godep restore
 go get github.com/docopt/docopt-go  # docopt-go is only used in CLI
 
 go build
 go build -o goscholar cmd/goscholar/main.go
+
+if ! [ "--dev" = "$1" ]; then
+    cd cmd/goscholar
+    gox
+    mv goscholar* ../../bin/
+fi
