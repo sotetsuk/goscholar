@@ -32,7 +32,7 @@ $ goscholar/build
 Options:
 
 ```
---fmt: apply go fmt to all files
+--dev: apply go fmt to all files and save dependencies
 ```
 
 ## Feature
@@ -43,7 +43,7 @@ Options:
 - find by ```<cluster-id>```
 - search the articles citing ```<cluster-id>```
 - JSON output
-- recursive clawling is not implemented
+- recursive crawling is not implemented
 
 ## Go API
 
@@ -75,68 +75,110 @@ for a := range ch {
 ### Example
 
 ```sh
-$ goscholar search --keywords "deep learning nature" --author "y bengio" --after 2015 --num 1 | python -mjson.tool
+$ goscholar search --keywords "deep learning nature" --author "y bengio" --after 2015 --num 1 | jq .
 [
-    {
-        "cluster_id": "5362332738201102290",
-        "info_id_": "0qfs6zbVakoJ",
-        "link": {
-            "format": "PDF",
-            "name": "psu.edu",
-            "url": "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf"
-        },
-        "num_cite_": "390",
-        "num_ver": "7",
-        "title": {
-            "name": "Deep learning",
-            "url": "http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html"
-        },
-        "year": "2015"
-    }
-] 
+  {
+    "title": {
+      "name": "Deep learning",
+      "url": "http://www.nature.com/nature/journal/v521/n7553/abs/nature14539.html"
+    },
+    "year": "2015",
+    "cluster_id": "5362332738201102290",
+    "num_cite": "499",
+    "num_ver": "7",
+    "info_id": "0qfs6zbVakoJ",
+    "link": {
+      "name": "psu.edu",
+      "url": "http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.436.894&rep=rep1&type=pdf",
+      "format": "PDF"
+    },
+    "bibtex": "@article{lecun2015deep, title={Deep learning}, author={LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey}, journal={Nature}, volume={521}, number={7553}, pages={436--444}, year={2015}, publisher={Nature Publishing Group}}",
+    "author": [
+      "LeCun, Yann",
+      "Bengio, Yoshua",
+      "Hinton, Geoffrey"
+    ],
+    "journal": "Nature",
+    "booktitle": "",
+    "volume": "521",
+    "number": "7553",
+    "pages": "436--444",
+    "publisher": "Nature Publishing Group"
+  }
+]
 ```
 
 ```sh
-$ goscholar find 15502119379559163003 | python  -mjson.tool
+$ goscholar find 15502119379559163003 | jq .
 [
-    {
-        "cluster_id": "15502119379559163003",
-        "info_id": "e6RSJHGXItcJ",
-        "link": {
-            "format": "PDF",
-            "name": "wustl.edu",
-            "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
-        },
-        "num_cite": "260",
-        "num_ver": "",
-        "title": {
-            "name": "Deep learning via Hessian-free optimization",
-            "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
-        },
-        "year": "2010"
-    }
-] 
+  {
+    "title": {
+      "name": "Deep learning via Hessian-free optimization",
+      "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf"
+    },
+    "year": "2010",
+    "cluster_id": "15502119379559163003",
+    "num_cite": "269",
+    "num_ver": "",
+    "info_id": "e6RSJHGXItcJ",
+    "link": {
+      "name": "wustl.edu",
+      "url": "http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_Martens10.pdf",
+      "format": "PDF"
+    },
+    "bibtex": "@inproceedings{martens2010deep, title={Deep learning via Hessian-free optimization}, author={Martens, James}, booktitle={Proceedings of the 27th International Conference on Machine Learning (ICML-10)}, pages={735--742}, year={2010}}",
+    "author": [
+      "Martens, James"
+    ],
+    "journal": "",
+    "booktitle": "Proceedings of the 27th International Conference on Machine Learning (ICML-10)",
+    "volume": "",
+    "number": "",
+    "pages": "735--742",
+    "publisher": ""
+  }
+]
 ```
 
 ```sh
 $ goscholar cite 15502119379559163003 --num 1 | python -mjson.tool
 [
-    {
-        "cluster_id": "3674494786452480182",
-        "info_id": "tmCGO4pt_jIJ",
-        "link": {
-            "format": "PDF",
-            "name": "toronto.edu",
-            "url": "http://www.cs.toronto.edu/~asamir/papers/SPM_DNN_12.pdf"
-        },
-        "num_cite": "1452",
-        "num_ver": "27",
-        "title": {
-            "name": "Deep neural networks for acoustic modeling in speech recognition: The shared views of four research groups",
-            "url": "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6296526"
-        },
-        "year": "2012"
-    }
+  {
+    "title": {
+      "name": "Deep neural networks for acoustic modeling in speech recognition: The shared views of four research groups",
+      "url": "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6296526"
+    },
+    "year": "2012",
+    "cluster_id": "3674494786452480182",
+    "num_cite": "1559",
+    "num_ver": "27",
+    "info_id": "tmCGO4pt_jIJ",
+    "link": {
+      "name": "toronto.edu",
+      "url": "http://www.cs.toronto.edu/~asamir/papers/SPM_DNN_12.pdf",
+      "format": "PDF"
+    },
+    "bibtex": "@article{hinton2012deep, title={Deep neural networks for acoustic modeling in speech recognition: The shared views of four research groups}, author={Hinton, Geoffrey and Deng, Li and Yu, Dong and Dahl, George E and Mohamed, Abdel-rahman and Jaitly, Navdeep and Senior, Andrew and Vanhoucke, Vincent and Nguyen, Patrick and Sainath, Tara N and others}, journal={Signal Processing Magazine, IEEE}, volume={29}, number={6}, pages={82--97}, year={2012}, publisher={IEEE}}",
+    "author": [
+      "Hinton, Geoffrey",
+      "Deng, Li",
+      "Yu, Dong",
+      "Dahl, George E",
+      "Mohamed, Abdel-rahman",
+      "Jaitly, Navdeep",
+      "Senior, Andrew",
+      "Vanhoucke, Vincent",
+      "Nguyen, Patrick",
+      "Sainath, Tara N",
+      "others"
+    ],
+    "journal": "Signal Processing Magazine, IEEE",
+    "booktitle": "",
+    "volume": "29",
+    "number": "6",
+    "pages": "82--97",
+    "publisher": "IEEE"
+  }
 ]
 ```
 
@@ -149,9 +191,11 @@ goscholar: Google Scholar crawler and scraper written in Go
 
 Usage:
   goscholar search [--keywords=<keywords>] [--author=<author>] [--title=<title>]
-                    [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
-  goscholar find <cluster-id>
+                   [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                   [--user-agent=<user-agent>]
+  goscholar find <cluster-id> [--user-agent=<user-agent>]
   goscholar cite <cluster-id> [--after=<year>] [--before=<year>] [--num=<num>] [--start=<start>]
+                              [--user-agent=<user-agent>]
   goscholar -h | --help
   goscholar --version
 
@@ -177,6 +221,7 @@ Others:
 - [github.com/docopt/docopt-go](https://github.com/docopt/docopt-go)
 - [github.com/PuerkitoBio/goquery](https://github.com/PuerkitoBio/goquery)
 - [github.com/Sirupsen/logrus](https://github.com/PuerkitoBio/goquery)
+- [github.com/sotetsuk/gobibtex](https://github.com/sotetsuk/gobibtex)
 
 ## Related Work
 goscholar is inspired by [scholar.py](https://github.com/ckreibich/scholar.py)
