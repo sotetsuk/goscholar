@@ -4,11 +4,27 @@ export GOFMTPATH="./ cmd/goscholar"
 
 eval $(go env)
 
-## TODO: install dependencies with GoDeps
-
-if [ "--fmt" = "$1" ]; then
+if [ "--dev" = "$1" ]; then
     gofmt -s -w -l $GOFMTPATH
+    $GOPATH/bin/godep save
 fi
+
+if ! [ -e $GOPATH/bin/godep ]; then
+    go get github.com/tools/godep
+fi
+
+if ! [ -e $GOPAHT/bin/gox ]; then
+    go get github.com/mitchellh/gox
+fi
+
+$GOPATH/bin/godep restore
+go get github.com/docopt/docopt-go  # docopt-go is only used in CLI
 
 go build
 go build -o goscholar cmd/goscholar/main.go
+
+if ! [ "--dev" = "$1" ]; then
+    cd cmd/goscholar
+    gox
+    mv goscholar* ../../bin/
+fi

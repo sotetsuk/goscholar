@@ -61,3 +61,7 @@ func enclosedInDoubleQuotation(s string) bool {
 		return false
 	}
 }
+
+func generateBibTeXLink(infoId string) (bibtexLink string) {
+	return scholar_url + "scholar.bib?q=info:" + infoId + ":scholar.google.com/&output=citation&hl=en&ct=citation"
+}

@@ -85,3 +85,12 @@ func TestEnclosedInDoubleQuotation(t *testing.T) {
 		t.Error("%v is enclosed in double quotation")
 	}
 }
+
+func TestGenerateBibTeXLink(t *testing.T) {
+	infoId := "b2pGeL14LLMJ"
+	expected := "https://scholar.google.co.jp/scholar.bib?q=info:b2pGeL14LLMJ:scholar.google.com/&output=citation&hl=en&ct=citation"
+
+	if bibtexLink := generateBibTeXLink(infoId); expected != bibtexLink {
+		t.Error(testErr{expected: expected, actual: bibtexLink})
+	}
+}

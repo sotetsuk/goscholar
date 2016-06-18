@@ -1,3 +1,4 @@
 .idea/*
 *.iml
-goscholar
+goscholar*
+Godeps/_workspace/src/*

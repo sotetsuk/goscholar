@@ -18,3 +18,7 @@ const (
 	article_sidebar_selector    = ".gs_md_wp > a"
 	sidebar_text_selector       = ".gs_ggsS"
 )
+
+var (
+	USER_AGENT = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)"
+)

@@ -5,27 +5,29 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	log "github.com/Sirupsen/logrus"
+	"golang.org/x/net/html"
+	"os"
 	"strconv"
 	"testing"
 	"time"
 )
 
-var url1, url2 string
 var doc1, doc2 *goquery.Document
 var err1, err2 error
 var a1Expected, a2Expected *Article
 
 func init() {
 	// set doc1
-	url1 = "https://scholar.google.co.jp/scholar?hl=en&q=\"Learning+deep+architectures+for+AI\"&as_ylo=&as_yhi=&start=&num="
-	doc1, err1 = Fetch(url1)
+	test_case1 := "./testdata/parse_test_case1.html"
+	doc1, err1 = loadDummyHtml(test_case1) // In actual case, use Fetch(url)
 
 	time.Sleep(3 * time.Second)
 
 	// set doc2
-	url2 = "https://scholar.google.co.jp/scholar?q=%22Unsupervised+feature+learning+and+deep+learning%3A+A+review+and+new+perspectives%22&btnG=&hl=en"
-	doc2, err2 = Fetch(url2)
+	test_case2 := "./testdata/parse_test_case2.html"
+	doc2, err2 = loadDummyHtml(test_case2) // In actual case, use Fetch(url)
 
+	// TODO: Update test for bibtex information
 	// set a1Expected
 	a1Expected = &Article{
 		Title: &Title{
@@ -34,7 +36,7 @@ func init() {
 		},
 		Year:      "2009",
 		ClusterId: "5331804836605365413",
-		NumCite:   "2429",
+		NumCite:   "2441",
 		NumVer:    "58",
 		InfoId:    "pYyS8T9g_kkJ",
 		Link: &Link{
@@ -61,6 +63,21 @@ func init() {
 			Format: "",
 		},
 	}
+}
+
+func loadDummyHtml(file_name string) (doc *goquery.Document, err error) {
+	var f *os.File
+
+	if f, err = os.Open(file_name); err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	var node *html.Node
+	if node, err = html.Parse(f); err != nil {
+		return nil, err
+	}
+	return goquery.NewDocumentFromNode(node), nil
 }
 
 func checkWithFirst(doc *goquery.Document, aExpected *Article) (err error) {
