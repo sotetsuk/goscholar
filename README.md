@@ -1,6 +1,7 @@
 [![GoDoc](https://godoc.org/github.com/sotetsuk/goscholar?status.svg)](https://godoc.org/github.com/sotetsuk/goscholar)
 [![Build Status](https://travis-ci.org/sotetsuk/goscholar.svg?branch=master)](https://travis-ci.org/sotetsuk/goscholar)
 [![Coverage Status](https://coveralls.io/repos/github/sotetsuk/goscholar/badge.svg?branch=master)](https://coveralls.io/github/sotetsuk/goscholar?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sotetsuk/goscholar)](https://goreportcard.com/report/github.com/sotetsuk/goscholar)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 [![GitHub version](https://badge.fury.io/gh/sotetsuk%2Fgoscholar.svg)](https://badge.fury.io/gh/sotetsuk%2Fgoscholar)
 
