@@ -18,13 +18,13 @@ var a1Expected, a2Expected *Article
 
 func init() {
 	// set doc1
-	test_case1 := "./testdata/parse_test_case1.html"
+	test_case1 := "./testdata/parse_test_case1"
 	doc1, err1 = loadDummyHtml(test_case1) // In actual case, use Fetch(url)
 
 	time.Sleep(3 * time.Second)
 
 	// set doc2
-	test_case2 := "./testdata/parse_test_case2.html"
+	test_case2 := "./testdata/parse_test_case2"
 	doc2, err2 = loadDummyHtml(test_case2) // In actual case, use Fetch(url)
 
 	// TODO: Update test for bibtex information
@@ -119,6 +119,8 @@ func TestParseSelection(t *testing.T) {
 	if err2 != nil {
 		t.Skip(err2)
 	}
+
+	doc1.Find(whole_article_selector).First()
 
 	var err error
 	check := func(doc *goquery.Document, aExpected *Article) {
